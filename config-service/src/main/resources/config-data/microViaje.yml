@@ -5,7 +5,7 @@ spring:
     name: microViaje
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/carreras?createDatabaseIfNotExist=true
+    url: jdbc:mysql://localhost:3306/viajes?createDatabaseIfNotExist=true
     username: root
   jpa:
     hibernate:

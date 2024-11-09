@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: microMonopatin
+  config:
+    import: optional:configserver:http://localhost:8081
