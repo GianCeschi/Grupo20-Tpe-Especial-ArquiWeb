@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service("ParadaServicio")
 public class ParadaService {
@@ -21,8 +22,8 @@ public class ParadaService {
         return paradaRepository.findAll();
     }
 
-    public Parada getParadaById(String id) {
-        return paradaRepository.findById(id).orElse(null);
+    public Optional<Parada> getParadaById(String id) {
+        return paradaRepository.findById(id);
     }
 
     public Parada saveParada(Parada parada) {
