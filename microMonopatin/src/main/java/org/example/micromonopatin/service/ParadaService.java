@@ -18,6 +18,10 @@ public class ParadaService {
         this.paradaRepository = paradaRepository;
     }
 
+
+
+    //        ******************* METODOS  PARA RECUPERAR PARADAS *******************
+
     public List<Parada> getAllParadas() {
         return paradaRepository.findAll();
     }
@@ -25,6 +29,11 @@ public class ParadaService {
     public Optional<Parada> getParadaById(String id) {
         return paradaRepository.findById(id);
     }
+
+
+
+    //        ******************* METODOS  PARA ABM DE PARADAS *******************
+
 
     public Parada saveParada(Parada parada) {
         return paradaRepository.save(parada);

@@ -22,6 +22,10 @@ public class MonopatinServicio {
         this.paradaRepository = paradaRepository;
     }
 
+
+
+    //        ******************* METODOS  PARA RECUPERAR MONOPATINES *******************
+
     public List<Monopatin> getAllMonopatines() {
         return monopatinRepository.findAll();
     }
@@ -31,12 +35,29 @@ public class MonopatinServicio {
     }
 
 
+
+    //        ******************* METODOS  PARA ABM DE MONOPATINES *******************
+
     public Monopatin saveMonopatin(Monopatin monopatin) {
         return monopatinRepository.save(monopatin);
     }
 
     public void deleteMonopatin(String id) {
         monopatinRepository.deleteById(id);
+    }
+
+
+
+    //        ******************* METODO  PARA ASIGNAR PARADA A MONOPATINES *******************
+
+    public void asignarParada(String idMonopatin, String idParada) {
+        Monopatin monopatin = monopatinRepository.findById(idMonopatin).orElse(null);
+        Parada parada = paradaRepository.findById(idParada).orElse(null);
+
+        if (monopatin != null && parada != null) {
+            monopatin.setParada(parada);
+            monopatinRepository.save(monopatin);
+        }
     }
 
 
@@ -62,6 +83,8 @@ public class MonopatinServicio {
             monopatinRepository.save(monopatin);
         }
     }
+
+
 
     //        ******************* METODOS  PARA REPORTES SOLICITADOS *******************
 
@@ -93,17 +116,5 @@ public class MonopatinServicio {
                     }
                 }).reversed())
                 .collect(Collectors.toList());
-    }
-
-
-
-    public void asignarParada(String idMonopatin, String idParada) {
-        Monopatin monopatin = monopatinRepository.findById(idMonopatin).orElse(null);
-        Parada parada = paradaRepository.findById(idParada).orElse(null);
-
-        if (monopatin != null && parada != null) {
-            monopatin.setParada(parada);
-            monopatinRepository.save(monopatin);
-        }
     }
 }
