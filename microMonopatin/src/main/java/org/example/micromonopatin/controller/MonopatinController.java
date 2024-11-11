@@ -25,7 +25,7 @@ public class MonopatinController {
     //        ******************* METODOS  PARA ABM DE MONOPATINES *******************
 
 
-    @PostMapping
+    @PostMapping("")
     public Monopatin createMonopatin(@RequestBody Monopatin monopatin) {
         return monopatinServicio.saveMonopatin(monopatin);
     }
@@ -51,7 +51,7 @@ public class MonopatinController {
     //        ******************* METODOS  PARA RECUPERAR MONOPATINES *******************
 
 
-    @GetMapping
+    @GetMapping("")
     public List<Monopatin> getAllMonopatines() {
         return monopatinServicio.getAllMonopatines();
     }

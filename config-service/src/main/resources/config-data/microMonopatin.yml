@@ -3,15 +3,15 @@ server:
 spring:
   application:
     name: microMonopatin
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/carreras?createDatabaseIfNotExist=true
-    username: root
-  jpa:
-    hibernate:
-      ddl-auto: update
-    show-sql: true
-    database: mysql
+  data:
+    mongodb:
+      #host: localhost
+      #port: 27017
+      #database: monopatin-db
+      #username: root
+      #password: password
+      #authentication-database: admin
+      uri: mongodb://root:password@localhost:27017/monopatin-db?authSource=admin
 eureka:
   client:
     fetch-registry: true
