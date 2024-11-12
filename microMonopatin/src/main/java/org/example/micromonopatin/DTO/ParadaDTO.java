@@ -1,5 +1,7 @@
 package org.example.micromonopatin.DTO;
 
+import org.example.micromonopatin.entity.Parada;
+
 public class ParadaDTO {
 
     private String idParada;
@@ -17,6 +19,12 @@ public class ParadaDTO {
         this.longitud = longitud;
         this.latitud = latitud;
         this.capacidadMaxima = capacidadMaxima;
+    }
+    public ParadaDTO(Parada parada) {
+        this.idParada = parada.getIdParada();
+        this.longitud = parada.getLongitud();
+        this.latitud = parada.getLatitud();
+        this.capacidadMaxima = parada.getCapacidadMaxima();
     }
 
     // Getters y Setters

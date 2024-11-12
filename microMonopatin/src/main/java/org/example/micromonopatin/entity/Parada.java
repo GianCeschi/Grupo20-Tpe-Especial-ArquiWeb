@@ -1,5 +1,6 @@
 package org.example.micromonopatin.entity;
 import lombok.Data;
+import org.example.micromonopatin.DTO.ParadaDTO;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -13,6 +14,13 @@ public class Parada {
     private double longitud;
     private double latitud;
     private int capacidadMaxima;
+
+    public Parada(ParadaDTO paradaDTO) {
+        this.idParada = paradaDTO.getIdParada();
+        this.longitud = paradaDTO.getLongitud();
+        this.latitud = paradaDTO.getLatitud();
+        this.capacidadMaxima = paradaDTO.getCapacidadMaxima();
+    }
 
     // Getters y setters
     public String getIdParada() {
