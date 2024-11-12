@@ -1,5 +1,6 @@
 package org.example.micromonopatin.service;
 
+import org.example.micromonopatin.DTO.MonopatinDTO;
 import org.example.micromonopatin.entity.Monopatin;
 import org.example.micromonopatin.entity.Parada;
 import org.example.micromonopatin.repository.MonopatinRepository;
@@ -26,20 +27,32 @@ public class MonopatinServicio {
 
     //        ******************* METODOS  PARA RECUPERAR MONOPATINES *******************
 
-    public List<Monopatin> getAllMonopatines() {
-        return monopatinRepository.findAll();
+    public List<MonopatinDTO> getAllMonopatines() {
+        // Obtener la lista de Monopatin desde el repositorio y convertir a MonopatinDTO
+        return monopatinRepository.findAll()
+                .stream()
+                .map(MonopatinDTO::new) // Usar el constructor
+                .collect(Collectors.toList());
     }
 
-    public Optional<Monopatin> getMonopatinById(String id) {
-        return monopatinRepository.findById(id);
+    public Optional<MonopatinDTO> getMonopatinById(String id) {
+        return monopatinRepository.findById(id)
+                .map(MonopatinDTO::new);
     }
 
 
 
     //        ******************* METODOS  PARA ABM DE MONOPATINES *******************
 
-    public Monopatin saveMonopatin(Monopatin monopatin) {
-        return monopatinRepository.save(monopatin);
+    public MonopatinDTO saveMonopatin(MonopatinDTO monopatinDTO) {
+        // Usar el constructor de Monopatin que recibe MonopatinDTO
+        Monopatin monopatin = new Monopatin(monopatinDTO);
+
+        // Guardar Monopatin en la base de datos
+        Monopatin savedMonopatin = monopatinRepository.save(monopatin);
+
+        // Usar el constructor de MonopatinDTO para la conversión
+        return new MonopatinDTO(savedMonopatin);
     }
 
     public void deleteMonopatin(String id) {
@@ -99,16 +112,18 @@ public class MonopatinServicio {
         return resultado;
     }
 
-    public List<Monopatin> reportePorKilometros() {
+    public List<MonopatinDTO> reportePorKilometros() {
         return monopatinRepository.findAll().stream()
-                .sorted(Comparator.comparing(Monopatin::getKmsRecorridos).reversed())
+                .map(MonopatinDTO::new)
+                .sorted(Comparator.comparing(MonopatinDTO::getKmsRecorridos).reversed())
                 .collect(Collectors.toList());
     }
 
-    public List<Monopatin> reportePorTiempo(boolean considerarTiempoEnPausa) {
+    public List<MonopatinDTO> reportePorTiempo(boolean considerarTiempoEnPausa) {
         return monopatinRepository.findAll().stream()
-                .sorted(Comparator.comparing(monopatin -> {
-                    Monopatin m = (Monopatin) monopatin;  // Tengo que hacer este casting, porque devuelve un objeto y no puedo accedder a los getters de Monopatin
+                .map(MonopatinDTO::new)
+                .sorted(Comparator.comparing(monopatinDTO -> {
+                    MonopatinDTO m = (MonopatinDTO) monopatinDTO;  // Tengo que hacer este casting, porque devuelve un objeto y no puedo accedder a los getters de Monopatin
                     if (considerarTiempoEnPausa) {
                         return m.getTiempoDeUso() - m.getTiempoEnPausa();
                     } else {

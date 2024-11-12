@@ -1,8 +1,10 @@
 package org.example.micromonopatin.controller;
 
+import org.example.micromonopatin.DTO.MonopatinDTO;
 import org.example.micromonopatin.entity.Monopatin;
 import org.example.micromonopatin.service.MonopatinServicio;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,17 +28,10 @@ public class MonopatinController {
 
 
     @PostMapping("")
-    public Monopatin createMonopatin(@RequestBody Monopatin monopatin) {
-        return monopatinServicio.saveMonopatin(monopatin);
+    public MonopatinDTO createMonopatin(@RequestBody MonopatinDTO monopatinDTO) {
+        return monopatinServicio.saveMonopatin(monopatinDTO);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Monopatin> updateMonopatin(@PathVariable String id, @RequestBody Monopatin monopatin) {
-        return monopatinServicio.getMonopatinById(id).map(existingMonopatin -> {
-            monopatin.setIdMonopatin(id);
-            return ResponseEntity.ok(monopatinServicio.saveMonopatin(monopatin));
-        }).orElse(ResponseEntity.notFound().build());
-    }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteMonopatin(@PathVariable String id) {
@@ -52,19 +47,80 @@ public class MonopatinController {
 
 
     @GetMapping("")
-    public List<Monopatin> getAllMonopatines() {
+    public List<MonopatinDTO> getAllMonopatines() {
         return monopatinServicio.getAllMonopatines();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Monopatin> getMonopatinById(@PathVariable String id) {
+    public ResponseEntity<MonopatinDTO> getMonopatinById(@PathVariable String id) {
         return monopatinServicio.getMonopatinById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
+
+
+    //        ******************* METODO PARA ASIGNARLE UNA PARADA A UN MONOPATIN *******************
+    @PutMapping("/{idMonopatin}/asignarParada/{idParada}")
+    public ResponseEntity<Void> asignarParada(@PathVariable String idMonopatin, @PathVariable String idParada) {
+        try {
+            monopatinServicio.asignarParada(idMonopatin, idParada);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    //        ******************* METODOS  PARA MANTENIMIENTO DE MONOPATINES *******************
+
+    @PutMapping("/{idMonopatin}/registrarMantenimiento")
+    public ResponseEntity<Void> registrarMantenimiento(@PathVariable String idMonopatin) {
+        try {
+            monopatinServicio.registrarMantenimiento(idMonopatin);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+    @PutMapping("/{idMonopatin}/finalizarMantenimiento")
+    public ResponseEntity<Void> finalizarMantenimiento(@PathVariable String idMonopatin) {
+        try {
+            monopatinServicio.finalizarMantenimiento(idMonopatin);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    //        ******************* METODOS  PARA REPORTES SOLICITADOS *******************
+
     @GetMapping("/conteoPorEstado")
     public Map<String, Long> obtenerConteoPorEstado() {
         return monopatinServicio.obtenerConteoPorEstado();
     }
+
+    @GetMapping("/reportePorKilometros")
+    public ResponseEntity<List<MonopatinDTO>> reportePorKilometros() {
+        try {
+            List<MonopatinDTO> reporte = monopatinServicio.reportePorKilometros();
+            return ResponseEntity.ok(reporte);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @GetMapping("/reportePorTiempo")
+    public ResponseEntity<List<MonopatinDTO>> reportePorTiempo(@RequestParam boolean considerarTiempoEnPausa) {
+        try {
+            List<MonopatinDTO> reporte = monopatinServicio.reportePorTiempo(considerarTiempoEnPausa);
+            return ResponseEntity.ok(reporte);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
 }
+
+
+
+
