@@ -15,6 +15,8 @@ public class Parada {
     private double latitud;
     private int capacidadMaxima;
 
+    public Parada() {
+    }
     public Parada(ParadaDTO paradaDTO) {
         this.idParada = paradaDTO.getIdParada();
         this.longitud = paradaDTO.getLongitud();
