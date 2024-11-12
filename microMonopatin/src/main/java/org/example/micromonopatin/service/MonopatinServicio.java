@@ -132,4 +132,22 @@ public class MonopatinServicio {
                 }).reversed())
                 .collect(Collectors.toList());
     }
+
+    // Método para obtener monopatines cercanos
+    public List<MonopatinDTO> obtenerMonopatinesCercanos(double longitud, double latitud, double rango) {
+        // Calcular los límites de longitud y latitud basados en el rango
+        double minLongitud = longitud - rango;
+        double maxLongitud = longitud + rango;
+        double minLatitud = latitud - rango;
+        double maxLatitud = latitud + rango;
+        // Obtener los monopatines cercanos usando el repositorio
+        List<Monopatin> monopatines = monopatinRepository.findMonopatinesCercanos(
+                minLongitud, maxLongitud, minLatitud, maxLatitud);
+
+        // Convertir la lista de Monopatines a MonopatinDTO
+        return monopatines.stream()
+                .map(MonopatinDTO::new)
+                .collect(Collectors.toList());
+    }
 }
+

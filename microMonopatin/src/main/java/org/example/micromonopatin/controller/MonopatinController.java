@@ -118,7 +118,21 @@ public class MonopatinController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+    // Endpoint para obtener los monopatines cercanos
+    @GetMapping("/cercanos")
+    public ResponseEntity<List<MonopatinDTO>> obtenerMonopatinesCercanos(
+            @RequestParam double longitud,
+            @RequestParam double latitud,
+            @RequestParam double rango) {
 
+        try {
+            List<MonopatinDTO> monopatinesCercanos = monopatinServicio.obtenerMonopatinesCercanos(longitud, latitud, rango);
+            return ResponseEntity.ok(monopatinesCercanos);
+        }
+        catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
 }
 
 
