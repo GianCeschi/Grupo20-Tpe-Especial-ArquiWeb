@@ -1,5 +1,5 @@
 services:
-  dbUsuario:
+  db:
     container_name: usuarios
     image: mysql:8.3.0
     environment:
