@@ -1,5 +1,6 @@
 package org.example.micromonopatin.service;
 
+import org.example.micromonopatin.DTO.ParadaDTO;
 import org.example.micromonopatin.entity.Parada;
 import org.example.micromonopatin.repository.ParadaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,11 +23,11 @@ public class ParadaService {
 
     //        ******************* METODOS  PARA RECUPERAR PARADAS *******************
 
-    public List<Parada> getAllParadas() {
+    public List<ParadaDTO> getAllParadas() {
         return paradaRepository.findAll();
     }
 
-    public Optional<Parada> getParadaById(String id) {
+    public Optional<ParadaDTO> getParadaById(String id) {
         return paradaRepository.findById(id);
     }
 
@@ -35,8 +36,8 @@ public class ParadaService {
     //        ******************* METODOS  PARA ABM DE PARADAS *******************
 
 
-    public Parada saveParada(Parada parada) {
-        return paradaRepository.save(parada);
+    public ParadaDTO saveParada(ParadaDTO paradaDTO) {
+        return paradaRepository.save(paradaDTO);
     }
 
     public void deleteParada(String id) {
