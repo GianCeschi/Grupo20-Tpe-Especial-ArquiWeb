@@ -133,6 +133,17 @@ public class MonopatinController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+
+    @GetMapping("/reporteKilometros")
+    public ResponseEntity<List<MonopatinDTO>> generarReportePorKilometros(@RequestParam boolean incluirTiempoDePausa) {
+        try {
+            // Llamar al servicio para generar el reporte
+            List<MonopatinDTO> reporte = monopatinServicio.generarReportePorKilometros(incluirTiempoDePausa);
+            return ResponseEntity.ok(reporte);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
 }
 
 

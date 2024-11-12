@@ -149,5 +149,24 @@ public class MonopatinServicio {
                 .map(MonopatinDTO::new)
                 .collect(Collectors.toList());
     }
+
+
+    // Método para generar el reporte de uso de monopatines por kilómetros
+    public List<MonopatinDTO> generarReportePorKilometros(boolean incluirTiempoDePausa) {
+        // Obtener todos los monopatines
+        List<Monopatin> monopatines = monopatinRepository.findAll();
+        // Mapear los monopatines a DTOs y ordenarlos por kilómetros recorridos
+        return monopatines.stream()
+                .map(monopatin -> {// Crear el DTO de cada monopatín
+                    MonopatinDTO dto = new MonopatinDTO(monopatin);
+                    // Si se incluye el tiempo de pausa, ajustar los kilómetros recorridos
+                    if (incluirTiempoDePausa) {
+                        dto.setKmsRecorridos(dto.getKmsRecorridos() + (dto.getTiempoEnPausa()));  // Asumimos que por cada minuto de espera se suma un kilometro
+                    }
+                    return dto;
+                })
+                .sorted(Comparator.comparing(MonopatinDTO::getKmsRecorridos).reversed())  // Ordenar de mayor a menor
+                .collect(Collectors.toList());
+    }
 }
 
