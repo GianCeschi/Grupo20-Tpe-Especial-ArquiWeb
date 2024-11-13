@@ -46,4 +46,16 @@ public class Usuario {
         this.password = request.getPassword();
         this.cuentasPago = new ArrayList<>();
     }
+
+    @Override
+    public String toString() {
+        return "Usuario{" +
+                "nombre='" + nombre + '\'' +
+                ", apellido='" + apellido + '\'' +
+                ", email='" + email + '\'' +
+                ", telefono='" + telefono + '\'' +
+                ", rol='" + rol + '\'' +
+                ", cuentasPago=" + cuentasPago +
+                '}';
+    }
 }

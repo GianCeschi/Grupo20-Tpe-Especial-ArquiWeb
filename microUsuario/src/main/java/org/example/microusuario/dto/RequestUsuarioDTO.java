@@ -1,9 +1,11 @@
 package org.example.microusuario.dto;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 @Data
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class RequestUsuarioDTO {
 
     private String nombre;

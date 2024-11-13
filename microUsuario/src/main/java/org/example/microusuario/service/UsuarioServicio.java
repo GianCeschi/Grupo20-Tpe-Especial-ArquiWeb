@@ -1,5 +1,6 @@
 package org.example.microusuario.service;
 
+import jakarta.transaction.Transactional;
 import org.example.microusuario.dto.RequestUsuarioDTO;
 import org.example.microusuario.dto.UsuarioDTO;
 import org.example.microusuario.entity.Usuario;
@@ -21,7 +22,7 @@ public class UsuarioServicio {
         this.usuarioRepository = usuarioRepository;
     }
 
-
+    @Transactional
     public UsuarioDTO save(RequestUsuarioDTO request ) {
         Usuario usuario = new Usuario(request);
         var resultado = usuarioRepository.save(usuario);
@@ -43,16 +44,19 @@ public class UsuarioServicio {
 
     public ResponseEntity<String> delete(Long id) {
         String message;
-        int result = this.usuarioRepository.delete(id);
-        if (result  == 1){
-            message = "Se eliminó con exito el usuario con id: " + id.toString();
-            return ResponseEntity.ok().body( message );
-        } else if (result == 0){
-            return ResponseEntity.notFound().build();
+        try{
+            if(usuarioRepository.existsById(id)){
+                Usuario usuario = usuarioRepository.findById(id).get();
+                this.usuarioRepository.delete(usuario);
+                message = "Se eliminó con exito el usuario con id: " + id.toString();
+                return ResponseEntity.ok().body( message );
+            }
+            else {
+                return ResponseEntity.notFound().build();
+            }
         }
-        else {
-            message = "El usuario no existe o no puede ser eliminado.";
-            return ResponseEntity.internalServerError().body( message );
+        catch (Exception e){
+            return ResponseEntity.internalServerError().body(e.getMessage());
         }
     }
 

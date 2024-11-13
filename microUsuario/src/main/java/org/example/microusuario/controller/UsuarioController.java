@@ -23,8 +23,8 @@ public class UsuarioController {
     }
 
     @PostMapping("")
-    public ResponseEntity<UsuarioDTO> save(@RequestBody RequestUsuarioDTO nuevoUsuario) {
-        var result =  this.usuarioServicio.save(nuevoUsuario);
+    public ResponseEntity<UsuarioDTO> save(@RequestBody RequestUsuarioDTO request) {
+        final var result =  this.usuarioServicio.save(request);
         return ResponseEntity.ok().body(result);
     }
 

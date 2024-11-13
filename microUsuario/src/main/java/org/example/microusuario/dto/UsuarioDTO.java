@@ -1,5 +1,8 @@
 package org.example.microusuario.dto;
 
+import lombok.Data;
+
+@Data
 public class UsuarioDTO {
     private String nombre;
     private String apellido;
@@ -10,4 +13,6 @@ public class UsuarioDTO {
         this.nombre = nombre;
         this.telefono = telefono;
     }
+
+
 }
