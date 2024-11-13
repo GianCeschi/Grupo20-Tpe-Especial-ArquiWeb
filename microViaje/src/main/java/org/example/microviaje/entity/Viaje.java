@@ -2,6 +2,8 @@ package org.example.microviaje.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import org.example.microviaje.dto.RequestViajeDTO;
+
 import java.sql.Timestamp;
 
 @Entity
@@ -31,4 +33,18 @@ public class Viaje {
 
     @Column
     private double montoTotal;
+
+    public Viaje(RequestViajeDTO request) {
+        this.idUsuario = request.getIdUsuario();
+        this.idCuentaPago = request.getIdCuentaPago();
+        this.idMonopatin = request.getIdMonopatin();
+        this.fechaHoraInicio = request.getFechaHoraInicio();
+        this.fechaHoraFin = request.getFechaHoraFin();
+        this.kmRecorridos = request.getKmRecorridos();
+        this.montoTotal = request.getMontoTotal();
+    }
+
+    public Viaje() {
+
+    }
 }
