@@ -36,8 +36,8 @@ public class CuentaPagoServicio {
         if (usuario.isPresent()){
             usuario.get().getCuentasPago().add(cuentaPago);
             usuarioRepository.save(usuario.get());
-            return new UsuarioDTO(usuario.get().getNombre(), usuario.get().getApellido(),
-                                  usuario.get().getTelefono(),usuario.get().getCuentasPago());
+            return new UsuarioDTO( usuario.get().getApellido(),usuario.get().getNombre(),
+                    usuario.get().getTelefono(),usuario.get().getCuentasPago());
         }
         else{
             return null;

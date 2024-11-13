@@ -26,7 +26,7 @@ public class CuentaPago {
     @Column( nullable = false)
     private double saldo;
 
-    @ManyToMany(mappedBy = "cuentaPago")
+    @ManyToMany(mappedBy = "cuentasPago")
     private List<Usuario> usuarios;
 
     public CuentaPago(RequestCuentaPagoDTO requestCuentaPagoDTO) {
