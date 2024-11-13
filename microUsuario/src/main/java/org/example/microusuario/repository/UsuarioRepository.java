@@ -9,7 +9,9 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
     Optional<Usuario> save(Usuario nuevoUsuario);
 
-    int delete(Integer id);
+
 
     Optional<Usuario> findById(Integer id);
+
+    int delete(Integer id);
 }
