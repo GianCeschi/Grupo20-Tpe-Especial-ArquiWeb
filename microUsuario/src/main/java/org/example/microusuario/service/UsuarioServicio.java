@@ -1,6 +1,7 @@
 package org.example.microusuario.service;
 
 import jakarta.transaction.Transactional;
+import org.example.microusuario.dto.RequestUsuarioDTO;
 import org.example.microusuario.dto.UsuarioDTO;
 import org.example.microusuario.entity.Usuario;
 import org.example.microusuario.repository.UsuarioRepository;
@@ -21,29 +22,27 @@ public class UsuarioServicio {
         this.usuarioRepository = usuarioRepository;
     }
 
-    @Transactional
-    public ResponseEntity<Usuario> save(Usuario nuevoUsuario) {
-        var resultado = usuarioRepository.save(nuevoUsuario);
-        if(resultado.isPresent()) {
-            return ResponseEntity.ok(resultado.get());
-        }
-        else return ResponseEntity.internalServerError().build();
-    }
 
-
-
-    public ResponseEntity<Usuario> update(Integer id, Usuario nuevoUsuario) {
-        Optional<Usuario> resultado = usuarioRepository.save(nuevoUsuario);
-        if (resultado.isPresent()){
-            return ResponseEntity.ok(resultado.get());
-        }
-        else {
-            return ResponseEntity.notFound().build();
-        }
+    public UsuarioDTO save(RequestUsuarioDTO request ) {
+        Usuario usuario = new Usuario(request);
+        var resultado = usuarioRepository.save(usuario);
+        return new UsuarioDTO(resultado.getApellido(), resultado.getNombre(), resultado.getTelefono());
 
     }
 
-    public ResponseEntity<String> delete(Integer id) {
+    public UsuarioDTO update(Long id, RequestUsuarioDTO nuevoUsuario) throws Exception {
+        Usuario usuario = new Usuario(nuevoUsuario);
+        usuario.setIdUsuario(id);
+        try{
+            var resultado = usuarioRepository.save(usuario);
+            return new UsuarioDTO(resultado.getApellido(), resultado.getNombre(), resultado.getTelefono());
+        }
+        catch (Exception e){
+            throw new Exception(e.getMessage());
+        }
+    }
+
+    public ResponseEntity<String> delete(Long id) {
         String message = "";
         int result = this.usuarioRepository.delete(id);
         if (result  == 1){
@@ -66,7 +65,7 @@ public class UsuarioServicio {
         return resultado;
     }
 
-    public ResponseEntity<Usuario> getById(Integer id) {
+    public ResponseEntity<Usuario> getById(Long id) {
         Optional<Usuario> result = usuarioRepository.findById(id);
         if (result.isPresent()){
             return ResponseEntity.ok(result.get());
