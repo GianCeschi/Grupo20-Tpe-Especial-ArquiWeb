@@ -1,6 +1,5 @@
 package org.example.microusuario.service;
 
-import jakarta.transaction.Transactional;
 import org.example.microusuario.dto.RequestUsuarioDTO;
 import org.example.microusuario.dto.UsuarioDTO;
 import org.example.microusuario.entity.Usuario;
@@ -43,7 +42,7 @@ public class UsuarioServicio {
     }
 
     public ResponseEntity<String> delete(Long id) {
-        String message = "";
+        String message;
         int result = this.usuarioRepository.delete(id);
         if (result  == 1){
             message = "Se eliminó con exito el usuario con id: " + id.toString();
