@@ -18,7 +18,7 @@ public class CuentaPagoController {
         this.cuentaPagoServicio = cuentaPagoServicio;
     }
 
-    @PostMapping("{idUsuario}")
+    @PostMapping("/{idUsuario}")
     public ResponseEntity<UsuarioDTO> save(@PathVariable Long idUsuario, @RequestBody RequestCuentaPagoDTO request) {
         final var result =  this.cuentaPagoServicio.save(idUsuario,request);
         return ResponseEntity.ok().body(result);

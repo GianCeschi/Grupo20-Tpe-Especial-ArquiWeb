@@ -18,4 +18,5 @@ public class RequestCuentaPagoDTO {
         this.nombre = nombre;
         this.saldo = saldo;
     }
+
 }

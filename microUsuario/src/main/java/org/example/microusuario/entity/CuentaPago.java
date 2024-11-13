@@ -35,4 +35,13 @@ public class CuentaPago {
         this.fechaAlta = LocalDate.now();
     }
 
+    @Override
+    public String toString() {
+        return "CuentaPago{" +
+                "nombre='" + nombre + '\'' +
+                ", fechaAlta=" + fechaAlta +
+                ", saldo=" + saldo +
+                ", usuarios=" + usuarios +
+                '}';
+    }
 }
