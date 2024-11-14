@@ -35,7 +35,7 @@ public class Usuario {
     private String password;
 
     @ManyToMany
-    private List<CuentaPago> cuentasPago;
+    private List<CuentaPago> cuentasPago = new ArrayList<CuentaPago>();
 
     public Usuario(RequestUsuarioDTO request) {
         this.nombre = request.getNombre();

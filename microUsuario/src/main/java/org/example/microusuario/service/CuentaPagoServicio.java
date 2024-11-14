@@ -1,5 +1,6 @@
 package org.example.microusuario.service;
 
+import ch.qos.logback.core.net.SyslogOutputStream;
 import jakarta.transaction.Transactional;
 import org.example.microusuario.dto.CuentaPagoDTO;
 import org.example.microusuario.dto.RequestCuentaPagoDTO;
@@ -27,20 +28,23 @@ public class CuentaPagoServicio {
 
 
     @Transactional
-    public UsuarioDTO save(Long idUsuario, RequestCuentaPagoDTO request ) {
+    public UsuarioDTO save( RequestCuentaPagoDTO request, long idUsuario ) {
 
         CuentaPago cuentaPago = new CuentaPago(request);
-        var resultado = cuentaPagoRepository.save(cuentaPago);
-
         var usuario = usuarioRepository.findById(idUsuario);
+
         if (usuario.isPresent()){
-            usuario.get().getCuentasPago().add(cuentaPago);
-            usuarioRepository.save(usuario.get());
-            return new UsuarioDTO( usuario.get().getApellido(),usuario.get().getNombre(),
-                    usuario.get().getTelefono(),usuario.get().getCuentasPago());
+            Usuario entidad = usuario.get();
+            cuentaPago.getUsuarios().add(entidad);
+            cuentaPagoRepository.save(cuentaPago);
+            entidad.getCuentasPago().add(cuentaPago);
+            usuarioRepository.save(entidad);
+
+            return new UsuarioDTO( entidad.getApellido(),entidad.getNombre(),
+                    entidad.getTelefono(),entidad.getCuentasPago().stream().map(cp -> new CuentaPagoDTO(cp.getNombre(),cp.getSaldo())).toList());
         }
-        else{
-            return null;
+        else {
+            return new UsuarioDTO("error", "grave", "que problema");
         }
     }
 

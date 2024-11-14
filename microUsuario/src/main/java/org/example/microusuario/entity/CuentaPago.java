@@ -7,6 +7,7 @@ import org.example.microusuario.dto.CuentaPagoDTO;
 import org.example.microusuario.dto.RequestCuentaPagoDTO;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -27,7 +28,7 @@ public class CuentaPago {
     private double saldo;
 
     @ManyToMany(mappedBy = "cuentasPago")
-    private List<Usuario> usuarios;
+    private List<Usuario> usuarios = new ArrayList<Usuario>();
 
     public CuentaPago(RequestCuentaPagoDTO requestCuentaPagoDTO) {
         this.nombre = requestCuentaPagoDTO.getNombre();

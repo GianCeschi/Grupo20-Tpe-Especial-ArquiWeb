@@ -1,6 +1,6 @@
 package org.example.microusuario.controller;
 
-
+import org.example.microusuario.dto.CuentaPagoDTO;
 import org.example.microusuario.dto.RequestCuentaPagoDTO;
 import org.example.microusuario.dto.UsuarioDTO;
 import org.example.microusuario.service.CuentaPagoServicio;
@@ -8,25 +8,29 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
-@RequestMapping("/api/cuentapagos")
-public class CuentaPagoController {
-    @Autowired
-    private CuentaPagoServicio cuentaPagoServicio;
+import java.util.List;
 
-    public CuentaPagoController(CuentaPagoServicio cuentaPagoServicio){
-        this.cuentaPagoServicio = cuentaPagoServicio;
+@RestController
+@RequestMapping("/api/usuarios")
+public class CuentaPagoController {
+
+    @Autowired
+    private CuentaPagoServicio cuentaPagoService;
+
+    public CuentaPagoController(CuentaPagoServicio cuentaPagoService) {
+        this.cuentaPagoService = cuentaPagoService;
     }
 
-    @PostMapping("/{idUsuario}")
-    public ResponseEntity<UsuarioDTO> save(@PathVariable Long idUsuario, @RequestBody RequestCuentaPagoDTO request) {
-        final var result =  this.cuentaPagoServicio.save(idUsuario,request);
+
+    @PostMapping("/cuentapagos/{idUsuario}")
+    public ResponseEntity<UsuarioDTO> save(@RequestBody RequestCuentaPagoDTO request, @PathVariable Long idUsuario) {
+        final var result =  this.cuentaPagoService.save(request, idUsuario);
         return ResponseEntity.ok().body(result);
     }
 
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/cuentapagos/{id}")
     public ResponseEntity<String> delete(@PathVariable Long id) {
-        return cuentaPagoServicio.delete(id);
+        return cuentaPagoService.delete(id);
     }
 }
