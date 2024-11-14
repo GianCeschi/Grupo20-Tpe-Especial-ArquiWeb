@@ -11,14 +11,14 @@ public class MonopatinDTO {
     private int tiempoDeUso;
     private int tiempoEnPausa;
     private int kmsRecorridos;
-    private ParadaDTO parada; // Relación con ParadaDTO
+    private String idParada;
 
     // Constructor sin argumentos
     public MonopatinDTO() {
     }
 
     // Constructor con todos los argumentos
-    public MonopatinDTO(String id, String estado, double longitud, double latitud, int tiempoDeUso, int tiempoEnPausa, int kmsRecorridos, ParadaDTO parada) {
+    public MonopatinDTO(String id, String estado, double longitud, double latitud, int tiempoDeUso, int tiempoEnPausa, int kmsRecorridos, String idParada) {
         this.id = id;
         this.estado = estado;
         this.longitud = longitud;
@@ -26,7 +26,7 @@ public class MonopatinDTO {
         this.tiempoDeUso = tiempoDeUso;
         this.tiempoEnPausa = tiempoEnPausa;
         this.kmsRecorridos = kmsRecorridos;
-        this.parada = parada;
+        this.idParada = idParada;
     }
 
     public MonopatinDTO(Monopatin monopatin) {
@@ -37,14 +37,7 @@ public class MonopatinDTO {
         this.tiempoDeUso = monopatin.getTiempoDeUso();
         this.tiempoEnPausa = monopatin.getTiempoEnPausa();
         this.kmsRecorridos = monopatin.getKmsRecorridos();
-
-        if (monopatin.getParada() != null) {
-            this.parada = new ParadaDTO();
-            this.parada.setIdParada(monopatin.getParada().getIdParada());
-            this.parada.setLongitud(monopatin.getParada().getLongitud());
-            this.parada.setLatitud(monopatin.getParada().getLatitud());
-            this.parada.setCapacidadMaxima(monopatin.getParada().getCapacidadMaxima());
-        }
+        this.idParada = monopatin.getIdParada();
     }
 
     // Getters y Setters
@@ -104,11 +97,11 @@ public class MonopatinDTO {
         this.kmsRecorridos = kmsRecorridos;
     }
 
-    public ParadaDTO getParada() {
-        return parada;
+    public String getIdParada() {
+        return idParada;
     }
 
-    public void setParada(ParadaDTO parada) {
-        this.parada = parada;
+    public void setIdParada(String idParada) {
+        this.idParada = idParada;
     }
 }

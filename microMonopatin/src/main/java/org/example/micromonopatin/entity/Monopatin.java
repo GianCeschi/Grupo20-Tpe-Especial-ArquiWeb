@@ -1,6 +1,5 @@
 package org.example.micromonopatin.entity;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "monopatines")
@@ -15,9 +14,7 @@ public class Monopatin {
     private int tiempoDeUso;
     private int tiempoEnPausa;
     private int kmsRecorridos;
-
-    @DBRef
-    private Parada parada; // Relación con Parada (debe tener una referencia)
+    private String idParada; // Relación con Parada (debe tener una referencia)
 
 
 
@@ -78,11 +75,11 @@ public class Monopatin {
         this.latitud = latitud;
     }
 
-    public Parada getParada() {
-        return parada;
+    public String getIdParada() {
+        return idParada;
     }
 
-    public void setParada(Parada parada) {
-        this.parada = parada;
+    public void setIdParada(String idParada) {
+        this.idParada = idParada;
     }
 }

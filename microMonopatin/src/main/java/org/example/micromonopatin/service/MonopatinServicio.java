@@ -54,16 +54,7 @@ public class MonopatinServicio {
         monopatin.setTiempoDeUso(monopatinDTO.getTiempoDeUso());
         monopatin.setTiempoEnPausa(monopatinDTO.getTiempoEnPausa());
         monopatin.setKmsRecorridos(monopatinDTO.getKmsRecorridos());
-
-        // Si el DTO tiene información de una parada, asignarla también
-        if (monopatinDTO.getParada() != null) {
-            Parada parada = new Parada();
-            parada.setIdParada(monopatinDTO.getParada().getIdParada());
-            parada.setLongitud(monopatinDTO.getParada().getLongitud());
-            parada.setLatitud(monopatinDTO.getParada().getLatitud());
-            parada.setCapacidadMaxima(monopatinDTO.getParada().getCapacidadMaxima());
-            monopatin.setParada(parada);
-        }
+        monopatin.setIdParada(monopatinDTO.getIdParada());
 
         // Guardar el Monopatin en la base de datos
         Monopatin savedMonopatin = monopatinRepository.save(monopatin);
@@ -85,7 +76,7 @@ public class MonopatinServicio {
         Parada parada = paradaRepository.findById(idParada).orElse(null);
 
         if (monopatin != null && parada != null) {
-            monopatin.setParada(parada);
+            monopatin.setIdParada(idParada);
             monopatinRepository.save(monopatin);
         }
     }
@@ -150,16 +141,24 @@ public class MonopatinServicio {
                 .collect(Collectors.toList());
     }
 
-    // Método para obtener monopatines cercanos
+    // Método para obtener monopatines cercanos basados en la ubicación de las paradas
     public List<MonopatinDTO> obtenerMonopatinesCercanos(double longitud, double latitud, double rango) {
         // Calcular los límites de longitud y latitud basados en el rango
         double minLongitud = longitud - rango;
         double maxLongitud = longitud + rango;
         double minLatitud = latitud - rango;
         double maxLatitud = latitud + rango;
-        // Obtener los monopatines cercanos usando el repositorio
-        List<Monopatin> monopatines = monopatinRepository.findMonopatinesCercanos(
-                minLongitud, maxLongitud, minLatitud, maxLatitud);
+
+        // Obtener las paradas dentro del rango
+        List<Parada> paradasCercanas = paradaRepository.findParadasCercanas(minLongitud, maxLongitud, minLatitud, maxLatitud);
+
+        // Obtener los ids de las paradas cercanas
+        List<String> idsParadasCercanas = paradasCercanas.stream()
+                .map(Parada::getIdParada)
+                .collect(Collectors.toList());
+
+        // Obtener los monopatines que hacen referencia a esas paradas
+        List<Monopatin> monopatines = monopatinRepository.findByIdParadaIn(idsParadasCercanas);
 
         // Convertir la lista de Monopatines a MonopatinDTO
         return monopatines.stream()
