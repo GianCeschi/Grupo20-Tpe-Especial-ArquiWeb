@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service("CuentaPagoServicio")
 public class CuentaPagoServicio {
     @Autowired
@@ -47,13 +49,19 @@ public class CuentaPagoServicio {
             return new UsuarioDTO("error", "grave", "que problema");
         }
     }
-
+    @Transactional
     public ResponseEntity<String> delete(Long id) {
         String message;
         try{
             if(cuentaPagoRepository.existsById(id)){
                 CuentaPago cuentaPago = cuentaPagoRepository.findById(id).get();
+                List<Usuario> listaUsuarios = cuentaPago.getUsuarios();
+
+                for (Usuario usuario : listaUsuarios) {
+                    usuario.getCuentasPago().remove(cuentaPago);
+                }
                 this.cuentaPagoRepository.delete(cuentaPago);
+
                 message = "Se eliminó con exito la cuentaPago con id: " + id.toString();
                 return ResponseEntity.ok().body( message );
             }

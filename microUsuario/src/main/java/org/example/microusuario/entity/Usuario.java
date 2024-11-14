@@ -34,7 +34,7 @@ public class Usuario {
     @Column(nullable = false)
     private String password;
 
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     private List<CuentaPago> cuentasPago = new ArrayList<CuentaPago>();
 
     public Usuario(RequestUsuarioDTO request) {
