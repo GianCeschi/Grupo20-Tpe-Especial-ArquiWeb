@@ -45,6 +45,16 @@ public class MonopatinServicio {
     //        ******************* METODOS  PARA ABM DE MONOPATINES *******************
 
     public MonopatinDTO saveMonopatin(MonopatinDTO monopatinDTO) {
+        // Verificar que el idParada no es nulo ni vacío
+        if (monopatinDTO.getIdParada() != null && !monopatinDTO.getIdParada().isEmpty()) {
+            // Consultar si existe la parada con el idParada proporcionado
+            boolean paradaExists = paradaRepository.existsById(monopatinDTO.getIdParada());
+
+            if (!paradaExists) {
+                throw new IllegalArgumentException("La parada con el id " + monopatinDTO.getIdParada() + " no existe.");
+            }
+        }
+
         // Crear una nueva instancia de Monopatin y configurar sus atributos manualmente
         Monopatin monopatin = new Monopatin();
         monopatin.setIdMonopatin(monopatinDTO.getId());
@@ -62,6 +72,8 @@ public class MonopatinServicio {
         // Convertir la entidad guardada en un DTO y devolverlo
         return new MonopatinDTO(savedMonopatin);
     }
+
+
 
     public void deleteMonopatin(String id) {
         monopatinRepository.deleteById(id);

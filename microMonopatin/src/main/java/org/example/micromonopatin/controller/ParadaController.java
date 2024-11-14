@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/paradas")
+@RequestMapping("/api/monopatines")
 public class ParadaController {
 
     @Autowired
@@ -25,13 +25,13 @@ public class ParadaController {
     //        ******************* METODOS  PARA ABM DE PARADAS *******************
 
     // Crear una parada
-    @PostMapping
+    @PostMapping("/paradas")
     public ParadaDTO createParada(@RequestBody ParadaDTO paradaDTO) {
         return paradaService.saveParada(paradaDTO);
     }
 
     // Borrar una parada
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/paradas/{id}")
     public ResponseEntity<Void> deleteParada(@PathVariable String id) {
         if (paradaService.getParadaById(id).isPresent()) {
             paradaService.deleteParada(id);
@@ -42,12 +42,12 @@ public class ParadaController {
 
     //        ******************* METODOS  PARA RECUPERAR PARADAS *******************
 
-    @GetMapping
+    @GetMapping("/paradas")
     public List<ParadaDTO> getAllParadas() {
         return paradaService.getAllParadas();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/paradas/{id}")
     public ResponseEntity<ParadaDTO> getParadaById(@PathVariable String id) {
         return paradaService.getParadaById(id)
                 .map(ResponseEntity::ok)
