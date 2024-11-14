@@ -1,5 +1,4 @@
 package org.example.micromonopatin.entity;
-import org.example.micromonopatin.DTO.MonopatinDTO;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -20,23 +19,7 @@ public class Monopatin {
     @DBRef
     private Parada parada; // Relación con Parada (debe tener una referencia)
 
-    public Monopatin(MonopatinDTO monopatinDTO) {
-        this.idMonopatin = monopatinDTO.getId();
-        this.estado = monopatinDTO.getEstado();
-        this.longitud = monopatinDTO.getLongitud();
-        this.latitud = monopatinDTO.getLatitud();
-        this.tiempoDeUso = monopatinDTO.getTiempoDeUso();
-        this.tiempoEnPausa = monopatinDTO.getTiempoEnPausa();
-        this.kmsRecorridos = monopatinDTO.getKmsRecorridos();
 
-        if (monopatinDTO.getParada() != null) {
-            this.parada = new Parada();
-            this.parada.setIdParada(monopatinDTO.getParada().getIdParada());
-            this.parada.setLongitud(monopatinDTO.getParada().getLongitud());
-            this.parada.setLatitud(monopatinDTO.getParada().getLatitud());
-            this.parada.setCapacidadMaxima(monopatinDTO.getParada().getCapacidadMaxima());
-        }
-    }
 
     public int getTiempoDeUso() {
         return tiempoDeUso;

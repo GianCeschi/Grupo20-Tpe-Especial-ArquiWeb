@@ -6,11 +6,12 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface MonopatinRepository extends MongoRepository<Monopatin, String> {
 
     long countByEstado(String disponible);
-
+    Optional<Monopatin> findById(String id);
     List<Monopatin> findAll();
 
     // Método para obtener monopatines que estén asociados a una parada en uso y cercanos a las coordenadas dadas

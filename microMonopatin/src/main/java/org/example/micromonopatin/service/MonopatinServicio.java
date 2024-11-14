@@ -45,13 +45,30 @@ public class MonopatinServicio {
     //        ******************* METODOS  PARA ABM DE MONOPATINES *******************
 
     public MonopatinDTO saveMonopatin(MonopatinDTO monopatinDTO) {
-        // Usar el constructor de Monopatin que recibe MonopatinDTO
-        Monopatin monopatin = new Monopatin(monopatinDTO);
+        // Crear una nueva instancia de Monopatin y configurar sus atributos manualmente
+        Monopatin monopatin = new Monopatin();
+        monopatin.setIdMonopatin(monopatinDTO.getId());
+        monopatin.setEstado(monopatinDTO.getEstado());
+        monopatin.setLongitud(monopatinDTO.getLongitud());
+        monopatin.setLatitud(monopatinDTO.getLatitud());
+        monopatin.setTiempoDeUso(monopatinDTO.getTiempoDeUso());
+        monopatin.setTiempoEnPausa(monopatinDTO.getTiempoEnPausa());
+        monopatin.setKmsRecorridos(monopatinDTO.getKmsRecorridos());
 
-        // Guardar Monopatin en la base de datos
+        // Si el DTO tiene información de una parada, asignarla también
+        if (monopatinDTO.getParada() != null) {
+            Parada parada = new Parada();
+            parada.setIdParada(monopatinDTO.getParada().getIdParada());
+            parada.setLongitud(monopatinDTO.getParada().getLongitud());
+            parada.setLatitud(monopatinDTO.getParada().getLatitud());
+            parada.setCapacidadMaxima(monopatinDTO.getParada().getCapacidadMaxima());
+            monopatin.setParada(parada);
+        }
+
+        // Guardar el Monopatin en la base de datos
         Monopatin savedMonopatin = monopatinRepository.save(monopatin);
 
-        // Usar el constructor de MonopatinDTO para la conversión
+        // Convertir la entidad guardada en un DTO y devolverlo
         return new MonopatinDTO(savedMonopatin);
     }
 
