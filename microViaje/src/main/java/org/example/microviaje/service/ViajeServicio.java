@@ -1,6 +1,7 @@
 package org.example.microviaje.service;
 
 import jakarta.transaction.Transactional;
+import org.example.microviaje.dto.ReporteViajeMonopatinDTO;
 import org.example.microviaje.dto.RequestViajeDTO;
 import org.example.microviaje.dto.ViajeDTO;
 import org.example.microviaje.entity.Viaje;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
 
 @Service("ViajeServicio")
 public class ViajeServicio {
@@ -73,6 +75,19 @@ public class ViajeServicio {
 
         }catch (Exception e){
             return ResponseEntity.internalServerError().body(e.getMessage());
+        }
+    }
+
+    public List<ReporteViajeMonopatinDTO> getViajesPorMonopatin(int anio, int cant) throws Exception{
+        var resultado = viajeRepository.getCantViajesPorAnioPorMonopatin(anio, cant);
+
+        try{
+            return resultado.stream().map(reporte-> new ReporteViajeMonopatinDTO(((Number)reporte[0]).intValue(), //ID MONOPATIN
+                                                                                ((Number)reporte[1]).intValue() //CANTIDAD
+                                                                                    )).collect(Collectors.toList())
+                    ;
+        }catch(Exception e){
+            throw new Exception(e.getMessage());
         }
     }
 }
