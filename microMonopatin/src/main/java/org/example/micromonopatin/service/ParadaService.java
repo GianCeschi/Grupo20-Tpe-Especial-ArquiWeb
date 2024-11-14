@@ -45,8 +45,12 @@ public class ParadaService {
 
 
     public ParadaDTO saveParada(ParadaDTO paradaDTO) {
-        // Usar el constructor de Parada que recibe ParadaDTO
-        Parada parada = new Parada(paradaDTO);
+        // Crear una nueva instancia de Parada y establecer los valores desde el ParadaDTO
+        Parada parada = new Parada();
+        parada.setIdParada(paradaDTO.getIdParada());
+        parada.setLongitud(paradaDTO.getLongitud());
+        parada.setLatitud(paradaDTO.getLatitud());
+        parada.setCapacidadMaxima(paradaDTO.getCapacidadMaxima());
 
         // Guardar Parada en la base de datos
         Parada savedParada = paradaRepository.save(parada);

@@ -17,12 +17,6 @@ public class Parada {
 
     public Parada() {
     }
-    public Parada(ParadaDTO paradaDTO) {
-        this.idParada = paradaDTO.getIdParada();
-        this.longitud = paradaDTO.getLongitud();
-        this.latitud = paradaDTO.getLatitud();
-        this.capacidadMaxima = paradaDTO.getCapacidadMaxima();
-    }
 
     // Getters y setters
     public String getIdParada() {
