@@ -11,7 +11,7 @@ public class UsuarioDTO {
     private String nombre;
     private String apellido;
     private String telefono;
-    private List<CuentaPago> cuentas;
+    private List<CuentaPagoDTO> cuentas;
 
     public UsuarioDTO(String apellido, String nombre, String telefono) {
         this.apellido = apellido;
@@ -20,7 +20,7 @@ public class UsuarioDTO {
         this.cuentas = new ArrayList<>();
     }
 
-    public UsuarioDTO(String apellido, String nombre, String telefono,List<CuentaPago> cuenta) {
+    public UsuarioDTO(String apellido, String nombre, String telefono,List<CuentaPagoDTO> cuenta) {
         this.apellido = apellido;
         this.nombre = nombre;
         this.telefono = telefono;

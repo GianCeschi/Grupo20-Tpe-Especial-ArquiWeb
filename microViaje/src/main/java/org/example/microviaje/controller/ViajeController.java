@@ -1,9 +1,12 @@
 package org.example.microviaje.controller;
 
+import org.example.microviaje.dto.RequestViajeDTO;
+import org.example.microviaje.dto.ViajeDTO;
+import org.example.microviaje.entity.Viaje;
 import org.example.microviaje.service.ViajeServicio;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("api/viajes")
@@ -15,4 +18,30 @@ public class ViajeController {
     public ViajeController(ViajeServicio viajeServicio) {
         this.viajeServicio = viajeServicio;
     }
+
+    @PostMapping("")
+    public ResponseEntity<ViajeDTO> save(@RequestBody RequestViajeDTO request) {
+        final var result =  this.viajeServicio.save(request);
+        return ResponseEntity.ok().body(result);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ViajeDTO> update(@PathVariable Long id, @RequestBody RequestViajeDTO nuevoViaje) throws Exception {
+        var resultado = viajeServicio.update(id, nuevoViaje);
+        return ResponseEntity.ok().body(resultado);
+    }
+
+    @GetMapping("")
+    public Iterable<Viaje> getAll() {
+        return viajeServicio.getAll();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Viaje> get(@PathVariable Long id) {
+        return viajeServicio.getById(id);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> delete(@PathVariable Long id){return viajeServicio.delete(id);}
+
 }
