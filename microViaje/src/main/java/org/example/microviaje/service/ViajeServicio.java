@@ -80,7 +80,6 @@ public class ViajeServicio {
 
     public List<ReporteViajeMonopatinDTO> getViajesPorMonopatin(int anio, int cant) throws Exception{
         var resultado = viajeRepository.getCantViajesPorAnioPorMonopatin(anio, cant);
-
         try{
             return resultado.stream().map(reporte-> new ReporteViajeMonopatinDTO(((Number)reporte[0]).intValue(), //ID MONOPATIN
                                                                                 ((Number)reporte[1]).intValue() //CANTIDAD
