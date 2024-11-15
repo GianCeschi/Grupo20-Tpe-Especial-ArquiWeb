@@ -4,7 +4,10 @@ import jakarta.persistence.*;
 import lombok.Data;
 import org.example.microviaje.dto.RequestViajeDTO;
 
+import java.sql.Time;
 import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Entity
 @Data
@@ -23,10 +26,13 @@ public class Viaje {
     private Long idMonopatin; // FK referenciando al microservicio de Monopatines
 
     @Column(nullable = false)
-    private Timestamp fechaHoraInicio;
+    private LocalDate fechaViaje;
 
     @Column
-    private Timestamp fechaHoraFin;
+    private LocalTime tiempoPausa;
+
+    @Column
+    private LocalTime tiempoViaje;
 
     @Column
     private double kmRecorridos;
@@ -38,8 +44,9 @@ public class Viaje {
         this.idUsuario = request.getIdUsuario();
         this.idCuentaPago = request.getIdCuentaPago();
         this.idMonopatin = request.getIdMonopatin();
-        this.fechaHoraInicio = request.getFechaHoraInicio();
-        this.fechaHoraFin = request.getFechaHoraFin();
+        this.fechaViaje = request.getFechaInicio();
+        this.tiempoPausa = request.getTiempoPausa();
+        this.tiempoViaje = request.getTiempoViaje();
         this.kmRecorridos = request.getKmRecorridos();
         this.montoTotal = request.getMontoTotal();
     }

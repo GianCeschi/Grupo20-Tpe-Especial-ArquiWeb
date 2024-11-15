@@ -50,4 +50,10 @@ public class ViajeController {
         return viajeServicio.getViajesPorMonopatin(anio, cant);
     }
 
+    @GetMapping("/facturacion/{mes1}/{anio1}/{mes2}/{anio2}")
+    public Double getTotalFacturacion(@PathVariable int mes1, @PathVariable int anio1,
+                                      @PathVariable int mes2, @PathVariable int anio2) throws Exception {
+        return viajeServicio.getTotalFacturacion(mes1,anio1,mes2,anio2);
+    }
+
 }

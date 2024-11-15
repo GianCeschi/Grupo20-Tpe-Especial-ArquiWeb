@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.temporal.TemporalAdjusters;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -28,7 +30,8 @@ public class ViajeServicio {
     public ViajeDTO save(RequestViajeDTO request){
         Viaje viaje = new Viaje(request);
         var result = viajeRepository.save(viaje);
-        return new ViajeDTO(result.getFechaHoraInicio(), result.getFechaHoraFin(), result.getKmRecorridos(), result.getMontoTotal());
+        return new ViajeDTO(result.getFechaViaje(), result.getTiempoPausa(),result.getTiempoViaje(),
+                result.getKmRecorridos(), result.getMontoTotal());
     }
 
     public ViajeDTO update(Long id, RequestViajeDTO request) throws Exception{
@@ -36,7 +39,8 @@ public class ViajeServicio {
         viaje.setIdViaje(id);
         try{
             var resultado = viajeRepository.save(viaje);
-            return new ViajeDTO(resultado.getFechaHoraInicio(),resultado.getFechaHoraFin(),resultado.getKmRecorridos(),resultado.getMontoTotal());
+            return new ViajeDTO(resultado.getFechaViaje(),resultado.getTiempoPausa(),resultado.getTiempoViaje(),
+                    resultado.getKmRecorridos(),resultado.getMontoTotal());
         }
         catch (Exception e){
             throw new Exception(e.getMessage());
@@ -45,8 +49,8 @@ public class ViajeServicio {
 
     public List<Viaje> getAll(){
         var resultado = viajeRepository.findAll();
-        resultado.stream().map(viaje -> new ViajeDTO(viaje.getFechaHoraInicio(),
-                                                        viaje.getFechaHoraFin(),
+        resultado.stream().map(viaje -> new ViajeDTO(viaje.getFechaViaje(),
+                                                        viaje.getTiempoPausa(),viaje.getTiempoViaje(),
                                                         viaje.getKmRecorridos(),
                                                         viaje.getMontoTotal())).collect(Collectors.toList());
         return resultado;
@@ -88,5 +92,16 @@ public class ViajeServicio {
         }catch(Exception e){
             throw new Exception(e.getMessage());
         }
+    }
+
+    public Double getTotalFacturacion(int mes1, int anio1, int mes2, int anio2) {
+        LocalDate fecha_inicio = LocalDate.of(anio1,mes1,1);
+        LocalDate fecha_fin = LocalDate.of(anio2,mes2,1);
+
+        LocalDate fin =  fecha_fin.with(
+                TemporalAdjusters.lastDayOfMonth()
+        );
+
+        return viajeRepository.getTotalFacturacion(fecha_inicio,fin);
     }
 }
