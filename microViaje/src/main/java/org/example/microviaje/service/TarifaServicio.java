@@ -1,5 +1,6 @@
 package org.example.microviaje.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.example.microviaje.dto.TarifaDTO;
 import org.example.microviaje.entity.Tarifa;
@@ -9,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.swing.text.html.Option;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -73,4 +75,22 @@ public class TarifaServicio {
             throw new Exception(e.getMessage());
         }
     }
+
+    public Tarifa ajustarTarifa(Long idTarifa, double nuevoValor, LocalDate nuevaFechaVigencia) {
+        // Buscar la tarifa existente
+        Tarifa tarifaExistente = tarifaRepository.findById(idTarifa)
+                .orElseThrow(() -> new EntityNotFoundException("Tarifa no encontrada"));
+
+        // Validar que la nueva fecha es mayor a la fecha de vigencia actual
+        if (nuevaFechaVigencia.isBefore(tarifaExistente.getFechaVigencia())) {
+            throw new IllegalArgumentException("La nueva fecha de vigencia debe ser mayor a la fecha de vigencia actual.");
+        }
+
+        // Actualizar la tarifa
+        tarifaExistente.setValor(nuevoValor);
+        tarifaExistente.setFechaVigencia(nuevaFechaVigencia);
+
+        return tarifaRepository.save(tarifaExistente);
+    }
+
 }

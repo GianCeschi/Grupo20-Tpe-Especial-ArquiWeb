@@ -13,15 +13,16 @@ import java.time.LocalTime;
 public class RequestViajeDTO {
     private Long idUsuario;
     private Long idCuentaPago;
-    private Long idMonopatin;
+    private String idMonopatin;
     private LocalDate fechaInicio;
-    private LocalTime tiempoPausa;
-    private LocalTime tiempoViaje;
-    private double kmRecorridos;
+    private int tiempoPausa;
+    private int tiempoViaje;
+    private int kmRecorridos;
     private double montoTotal;
+    private String paradaDestino;
 
 
-    public RequestViajeDTO(Long idUsuario,Long idCuentaPago, Long idMonopatin, LocalDate fechaInicio, LocalTime tiempoPausa, LocalTime tiempoViaje, double kmRecorridos, double montoTotal) {
+    public RequestViajeDTO(Long idUsuario,Long idCuentaPago, String idMonopatin, LocalDate fechaInicio, int tiempoPausa, int tiempoViaje, int kmRecorridos, double montoTotal,String paradaDestino) {
         this.idUsuario = idUsuario;
         this.idCuentaPago = idCuentaPago;
         this.idMonopatin = idMonopatin;
@@ -30,5 +31,6 @@ public class RequestViajeDTO {
         this.tiempoViaje = tiempoViaje;
         this.kmRecorridos = kmRecorridos;
         this.montoTotal = montoTotal;
+        this.paradaDestino = paradaDestino;
     }
 }

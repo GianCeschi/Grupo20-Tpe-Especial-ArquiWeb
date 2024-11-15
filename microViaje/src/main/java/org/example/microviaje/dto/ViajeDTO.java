@@ -10,16 +10,18 @@ import java.time.LocalTime;
 @Data
 public class ViajeDTO {
     private LocalDate fechaInicio;
-    private LocalTime tiempoPausa;
-    private LocalTime tiempoViaje;
-    private double kmsRecorridos;
+    private int tiempoPausa;
+    private int tiempoViaje;
+    private int kmsRecorridos;
     private double montoTotal;
+    private String idParada;
 
-    public ViajeDTO(LocalDate fechaInicio, LocalTime tiempoPausa,LocalTime tiempoViaje, double kmsRecorridos, double montoTotal){
+    public ViajeDTO(LocalDate fechaInicio, int tiempoPausa,int tiempoViaje, int kmsRecorridos, double montoTotal, String idParada) {
         this.fechaInicio = fechaInicio;
         this.tiempoPausa = tiempoPausa;
         this.tiempoViaje = tiempoViaje;
         this.kmsRecorridos = kmsRecorridos;
         this.montoTotal = montoTotal;
+        this.idParada = idParada;
     }
 }

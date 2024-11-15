@@ -5,6 +5,7 @@ import org.example.microviaje.dto.ReporteViajeMonopatinDTO;
 import org.example.microviaje.dto.RequestViajeDTO;
 import org.example.microviaje.dto.ViajeDTO;
 import org.example.microviaje.entity.Viaje;
+import org.example.microviaje.feignClient.MonopatinFeignClient;
 import org.example.microviaje.repository.ViajeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +23,9 @@ public class ViajeServicio {
     @Autowired
     private ViajeRepository viajeRepository;
 
+    @Autowired
+    private MonopatinFeignClient monopatinFeignClient;
+
     public ViajeServicio(ViajeRepository viajeRepository) {
         this.viajeRepository = viajeRepository;
     }
@@ -30,10 +34,9 @@ public class ViajeServicio {
     public ViajeDTO save(RequestViajeDTO request){
         Viaje viaje = new Viaje(request);
         var result = viajeRepository.save(viaje);
-        //metodo iniciar viaje de monopatin (recibe viaje.get(idMonopatin)
-        //tener en cuenta que idMonopatin es de tipo String
+        monopatinFeignClient.comenzarViaje(viaje.getIdMonopatin());
         return new ViajeDTO(result.getFechaViaje(), result.getTiempoPausa(),result.getTiempoViaje(),
-                result.getKmRecorridos(), result.getMontoTotal());
+                result.getKmRecorridos(), result.getMontoTotal(), result.getParadaDestino());
     }
 
     public ViajeDTO update(Long id, RequestViajeDTO request) throws Exception{
@@ -41,8 +44,11 @@ public class ViajeServicio {
         viaje.setIdViaje(id);
         try{
             var resultado = viajeRepository.save(viaje);
+            monopatinFeignClient.finalizarViaje(resultado.getIdMonopatin(),resultado.getParadaDestino(),
+                    resultado.getKmRecorridos(),resultado.getTiempoPausa(),resultado.getTiempoViaje());
+
             return new ViajeDTO(resultado.getFechaViaje(),resultado.getTiempoPausa(),resultado.getTiempoViaje(),
-                    resultado.getKmRecorridos(),resultado.getMontoTotal());
+                    resultado.getKmRecorridos(),resultado.getMontoTotal(),resultado.getParadaDestino());
         }
         catch (Exception e){
             throw new Exception(e.getMessage());
@@ -54,7 +60,7 @@ public class ViajeServicio {
         resultado.stream().map(viaje -> new ViajeDTO(viaje.getFechaViaje(),
                                                         viaje.getTiempoPausa(),viaje.getTiempoViaje(),
                                                         viaje.getKmRecorridos(),
-                                                        viaje.getMontoTotal())).collect(Collectors.toList());
+                                                        viaje.getMontoTotal(),viaje.getParadaDestino())).collect(Collectors.toList());
         return resultado;
     }
 

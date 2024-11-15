@@ -23,22 +23,25 @@ public class Viaje {
     private Long idCuentaPago; // FK referenciando al microservicio de Usuarios
 
     @Column(nullable = false)
-    private Long idMonopatin; // FK referenciando al microservicio de Monopatines
+    private String idMonopatin; // FK referenciando al microservicio de Monopatines
 
     @Column(nullable = false)
     private LocalDate fechaViaje;
 
     @Column
-    private LocalTime tiempoPausa;
+    private int tiempoPausa;
 
     @Column
-    private LocalTime tiempoViaje;
+    private int tiempoViaje;
 
     @Column
-    private double kmRecorridos;
+    private int kmRecorridos;
 
     @Column
     private double montoTotal;
+
+    @Column
+    private String paradaDestino;
 
     public Viaje(RequestViajeDTO request) {
         this.idUsuario = request.getIdUsuario();
@@ -49,6 +52,7 @@ public class Viaje {
         this.tiempoViaje = request.getTiempoViaje();
         this.kmRecorridos = request.getKmRecorridos();
         this.montoTotal = request.getMontoTotal();
+        this.paradaDestino = request.getParadaDestino();
     }
 
     public Viaje() {

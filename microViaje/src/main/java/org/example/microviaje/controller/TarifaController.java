@@ -1,10 +1,14 @@
 package org.example.microviaje.controller;
 
 import org.example.microviaje.dto.TarifaDTO;
+import org.example.microviaje.entity.Tarifa;
 import org.example.microviaje.service.TarifaServicio;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
 
 @RestController
 @RequestMapping("/api/viajes")
@@ -43,4 +47,13 @@ public class TarifaController {
         var resultado = tarifaServicio.update(id, tarifaNueva);
         return ResponseEntity.ok().body(resultado);
     }
+
+    @PutMapping("/tarifas/ajustar/{id}")
+    public ResponseEntity<Tarifa> ajustarTarifa(@PathVariable Long id, @RequestParam double nuevoValor,
+                                                @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate nuevaFechaVigencia) {
+
+        var resultado = tarifaServicio.ajustarTarifa(id,nuevoValor, nuevaFechaVigencia);
+        return ResponseEntity.ok().body(resultado);
+    }
+
 }
