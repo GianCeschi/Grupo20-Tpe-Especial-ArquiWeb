@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service("CuentaPagoServicio")
 public class CuentaPagoServicio {
@@ -28,6 +29,11 @@ public class CuentaPagoServicio {
         this.usuarioRepository = usuarioRepository;
     }
 
+    @Transactional
+    public List<CuentaPagoDTO> getAll(){
+        var resultado = cuentaPagoRepository.findAll();
+        return resultado.stream().map( cp ->new CuentaPagoDTO( cp.getNombre(), cp.getSaldo())).toList();
+    }
 
     @Transactional
     public UsuarioDTO save( RequestCuentaPagoDTO request, long idUsuario ) {
@@ -72,5 +78,32 @@ public class CuentaPagoServicio {
         catch (Exception e){
             return ResponseEntity.internalServerError().body(e.getMessage());
         }
+    }
+
+    public ResponseEntity<CuentaPagoDTO> getById(Long id) {
+        var resultado = cuentaPagoRepository.findById(id);
+        if(resultado.isPresent()){
+            CuentaPagoDTO cp = new CuentaPagoDTO(resultado.get().getNombre(),resultado.get().getSaldo());
+            return ResponseEntity.ok().body(cp);
+
+        }
+        else{
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    public CuentaPagoDTO update(Long id, RequestCuentaPagoDTO request) throws Exception {
+        Optional<CuentaPago>  optCuentaPago = cuentaPagoRepository.findById(id);
+        if(optCuentaPago.isPresent()){
+            CuentaPago cuentaPago = optCuentaPago.get();
+            cuentaPago.setNombre(request.getNombre());
+            cuentaPago.setSaldo(request.getSaldo());
+            cuentaPagoRepository.save(cuentaPago);
+            return new CuentaPagoDTO(cuentaPago.getNombre(),cuentaPago.getSaldo());
+        }
+        else{
+            return null;
+        }
+
     }
 }

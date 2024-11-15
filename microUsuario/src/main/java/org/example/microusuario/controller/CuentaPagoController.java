@@ -21,6 +21,15 @@ public class CuentaPagoController {
         this.cuentaPagoService = cuentaPagoService;
     }
 
+    @GetMapping("/cuentapagos")
+    public Iterable<CuentaPagoDTO> getAll() {
+        return cuentaPagoService.getAll();
+    }
+
+    @GetMapping("/cuentapagos/{id}")
+    public ResponseEntity<CuentaPagoDTO> getById(@PathVariable Long id) {
+        return cuentaPagoService.getById(id);
+    }
 
     @PostMapping("/cuentapagos/{idUsuario}")
     public ResponseEntity<UsuarioDTO> save(@RequestBody RequestCuentaPagoDTO request, @PathVariable Long idUsuario) {
@@ -32,5 +41,11 @@ public class CuentaPagoController {
     @DeleteMapping("/cuentapagos/{id}")
     public ResponseEntity<String> delete(@PathVariable Long id) {
         return cuentaPagoService.delete(id);
+    }
+
+    @PutMapping("/cuentapagos/{id}")
+    public ResponseEntity<CuentaPagoDTO> update(@PathVariable Long id, @RequestBody RequestCuentaPagoDTO request) throws Exception {
+        var resultado =  cuentaPagoService.update(id,request);
+        return ResponseEntity.ok().body(resultado);
     }
 }
