@@ -196,5 +196,17 @@ public class MonopatinServicio {
                 .sorted(Comparator.comparing(MonopatinDTO::getKmsRecorridos).reversed())  // Ordenar de mayor a menor
                 .collect(Collectors.toList());
     }
+
+    //        ******************* METODOS  PARA INICIO Y FIN DE VIAJE *******************
+
+    public void comenzarViaje (String idMonopatin) {
+        Monopatin monopatin = monopatinRepository.findById(idMonopatin).orElse(null);
+        if (monopatin != null) {
+            monopatin.setEstado("en uso");
+            monopatin.setIdParada(null);
+            monopatinRepository.save(monopatin);
+        }
+    }
+
 }
 
