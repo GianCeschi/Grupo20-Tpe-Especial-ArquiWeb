@@ -40,12 +40,12 @@ public class UsuarioController {
     }
 
     @GetMapping ("")
-    public Iterable<Usuario> getAll() {
+    public Iterable<UsuarioDTO> getAll() {
         return usuarioServicio.getAll();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Usuario> getById(@PathVariable Long id) {
+    public ResponseEntity<UsuarioDTO> getById(@PathVariable Long id) {
         return usuarioServicio.getById(id);
     }
 

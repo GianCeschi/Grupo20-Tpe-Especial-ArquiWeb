@@ -1,14 +1,17 @@
 package org.example.microusuario.service;
 
 import jakarta.transaction.Transactional;
+import org.example.microusuario.dto.CuentaPagoDTO;
 import org.example.microusuario.dto.RequestUsuarioDTO;
 import org.example.microusuario.dto.UsuarioDTO;
+import org.example.microusuario.entity.CuentaPago;
 import org.example.microusuario.entity.Usuario;
 import org.example.microusuario.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -60,18 +63,30 @@ public class UsuarioServicio {
         }
     }
 
-    public List<Usuario> getAll() {
-        var resultado = usuarioRepository.findAll();
-        resultado.stream().map(usuario -> new UsuarioDTO(usuario.getApellido(),
-                                                         usuario.getNombre(),
-                                                          usuario.getTelefono())).collect(Collectors.toList());
-        return resultado;
+    //Dado un Usuario devolvemos lista de sus cuentas en formato CuentaDTO para visualizar en el front.
+    private List<CuentaPagoDTO> obtenerListaCuentasDTO(Usuario usuario) {
+        List<CuentaPago> list = usuario.getCuentasPago();
+        List<CuentaPagoDTO>listCuentasDto = new ArrayList<>();
+        for(CuentaPago c : list){
+            listCuentasDto.add(new CuentaPagoDTO(c.getNombre(),c.getSaldo()));
+        }
+        return listCuentasDto;
     }
 
-    public ResponseEntity<Usuario> getById(Long id) {
+    public List<UsuarioDTO> getAll() {
+        var resultado = usuarioRepository.findAll();
+
+        return resultado.stream().map(usuario -> new UsuarioDTO(usuario.getApellido(),
+                                                         usuario.getNombre(),
+                                                          usuario.getTelefono(),obtenerListaCuentasDTO(usuario))).toList();
+    }
+
+    public ResponseEntity<UsuarioDTO> getById(Long id) {
         Optional<Usuario> result = usuarioRepository.findById(id);
         if (result.isPresent()){
-            return ResponseEntity.ok(result.get());
+            UsuarioDTO usuarioDTO = new UsuarioDTO(result.get().getApellido(),result.get().getNombre(),
+                    result.get().getTelefono(),obtenerListaCuentasDTO(result.get()));
+            return ResponseEntity.ok().body(usuarioDTO);
         }
         else return ResponseEntity.notFound().build();
     }
