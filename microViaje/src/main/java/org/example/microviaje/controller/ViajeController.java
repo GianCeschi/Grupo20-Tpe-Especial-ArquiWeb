@@ -1,5 +1,6 @@
 package org.example.microviaje.controller;
 
+import org.example.microviaje.dto.ReporteViajeMonopatinDTO;
 import org.example.microviaje.dto.RequestViajeDTO;
 import org.example.microviaje.dto.ViajeDTO;
 import org.example.microviaje.entity.Viaje;
@@ -43,5 +44,10 @@ public class ViajeController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> delete(@PathVariable Long id){return viajeServicio.delete(id);}
+
+    @GetMapping("/viajesPorMonopatin/{anio}/{cant}")
+    public Iterable<ReporteViajeMonopatinDTO> getViajesPorMonopatin(@PathVariable int anio, @PathVariable int cant) throws Exception{
+        return viajeServicio.getViajesPorMonopatin(anio, cant);
+    }
 
 }
