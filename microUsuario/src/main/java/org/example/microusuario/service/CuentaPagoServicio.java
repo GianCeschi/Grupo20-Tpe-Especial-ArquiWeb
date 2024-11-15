@@ -55,12 +55,14 @@ public class CuentaPagoServicio {
             return new UsuarioDTO("error", "grave", "que problema");
         }
     }
+
     @Transactional
     public ResponseEntity<String> delete(Long id) {
         String message;
-        try{
-            if(cuentaPagoRepository.existsById(id)){
-                CuentaPago cuentaPago = cuentaPagoRepository.findById(id).get();
+        try {
+            Optional<CuentaPago> optionalCuentaPago = cuentaPagoRepository.findById(id);
+            if (optionalCuentaPago.isPresent()) {
+                CuentaPago cuentaPago = optionalCuentaPago.get();
                 List<Usuario> listaUsuarios = cuentaPago.getUsuarios();
 
                 for (Usuario usuario : listaUsuarios) {
@@ -69,13 +71,11 @@ public class CuentaPagoServicio {
                 this.cuentaPagoRepository.delete(cuentaPago);
 
                 message = "Se eliminó con exito la cuentaPago con id: " + id.toString();
-                return ResponseEntity.ok().body( message );
-            }
-            else {
+                return ResponseEntity.ok().body(message);
+            } else {
                 return ResponseEntity.notFound().build();
             }
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             return ResponseEntity.internalServerError().body(e.getMessage());
         }
     }
