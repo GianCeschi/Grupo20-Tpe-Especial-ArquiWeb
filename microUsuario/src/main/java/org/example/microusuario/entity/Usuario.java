@@ -34,6 +34,9 @@ public class Usuario {
     @Column(nullable = false)
     private String password;
 
+    @Column(nullable = false)
+    private Boolean activo;
+
     @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     private List<CuentaPago> cuentasPago = new ArrayList<CuentaPago>();
 
@@ -44,6 +47,7 @@ public class Usuario {
         this.telefono = request.getTelefono();
         this.rol = request.getRol();
         this.password = request.getPassword();
+        this.activo = true;
         this.cuentasPago = new ArrayList<>();
     }
 

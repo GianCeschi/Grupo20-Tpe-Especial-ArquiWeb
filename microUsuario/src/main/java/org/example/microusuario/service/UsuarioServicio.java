@@ -29,7 +29,7 @@ public class UsuarioServicio {
     public UsuarioDTO save(RequestUsuarioDTO request ) {
         Usuario usuario = new Usuario(request);
         var resultado = usuarioRepository.save(usuario);
-        return new UsuarioDTO(resultado.getApellido(), resultado.getNombre(), resultado.getTelefono());
+        return new UsuarioDTO(resultado.getApellido(), resultado.getNombre(), resultado.getTelefono(),resultado.getActivo());
 
     }
 
@@ -38,7 +38,7 @@ public class UsuarioServicio {
         usuario.setIdUsuario(id);
         try{
             var resultado = usuarioRepository.save(usuario);
-            return new UsuarioDTO(resultado.getApellido(), resultado.getNombre(), resultado.getTelefono());
+            return new UsuarioDTO(resultado.getApellido(), resultado.getNombre(), resultado.getTelefono(),resultado.getActivo());
         }
         catch (Exception e){
             throw new Exception(e.getMessage());
@@ -78,16 +78,30 @@ public class UsuarioServicio {
 
         return resultado.stream().map(usuario -> new UsuarioDTO(usuario.getApellido(),
                                                          usuario.getNombre(),
-                                                          usuario.getTelefono(),obtenerListaCuentasDTO(usuario))).toList();
+                                                          usuario.getTelefono(),usuario.getActivo(),obtenerListaCuentasDTO(usuario))).toList();
     }
 
     public ResponseEntity<UsuarioDTO> getById(Long id) {
         Optional<Usuario> result = usuarioRepository.findById(id);
         if (result.isPresent()){
             UsuarioDTO usuarioDTO = new UsuarioDTO(result.get().getApellido(),result.get().getNombre(),
-                    result.get().getTelefono(),obtenerListaCuentasDTO(result.get()));
+                    result.get().getTelefono(),result.get().getActivo(),obtenerListaCuentasDTO(result.get()));
             return ResponseEntity.ok().body(usuarioDTO);
         }
         else return ResponseEntity.notFound().build();
+    }
+
+    public ResponseEntity<UsuarioDTO> cambiarEstado(Long id) {
+        Optional<Usuario> optUsuario = usuarioRepository.findById(id);
+        if (optUsuario.isPresent()){
+            Usuario usuario = optUsuario.get();
+            usuario.setActivo(!usuario.getActivo());
+            usuarioRepository.save(usuario);
+            return ResponseEntity.ok(new UsuarioDTO(usuario.getApellido(),usuario.getNombre(),
+                                                    usuario.getTelefono(),usuario.getActivo(),obtenerListaCuentasDTO(usuario)));
+        }
+        else{
+            return ResponseEntity.notFound().build();
+        }
     }
 }

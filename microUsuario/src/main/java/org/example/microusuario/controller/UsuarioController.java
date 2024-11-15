@@ -49,4 +49,9 @@ public class UsuarioController {
         return usuarioServicio.getById(id);
     }
 
+    @PutMapping("/estado/{id}")
+    public ResponseEntity<UsuarioDTO> cambiarEstado(@PathVariable Long id) {
+        return this.usuarioServicio.cambiarEstado(id);
+    }
+
 }

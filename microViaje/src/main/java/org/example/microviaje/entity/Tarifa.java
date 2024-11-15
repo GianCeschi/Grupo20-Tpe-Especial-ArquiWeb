@@ -2,10 +2,14 @@ package org.example.microviaje.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.example.microviaje.dto.TarifaDTO;
+
 import java.time.LocalDate;
 
 @Entity
 @Data
+@NoArgsConstructor
 public class Tarifa {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -19,5 +23,11 @@ public class Tarifa {
 
     @Column
     private LocalDate fechaVigencia;
+
+    public Tarifa(TarifaDTO tarifaDTO) {
+        this.tipo = tarifaDTO.getTipo();
+        this.valor = tarifaDTO.getValor();
+        this.fechaVigencia = tarifaDTO.getFechaVigencia();
+    }
 
 }

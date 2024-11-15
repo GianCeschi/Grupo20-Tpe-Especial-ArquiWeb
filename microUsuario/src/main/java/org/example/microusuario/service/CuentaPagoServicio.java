@@ -49,10 +49,10 @@ public class CuentaPagoServicio {
             usuarioRepository.save(entidad);
 
             return new UsuarioDTO( entidad.getApellido(),entidad.getNombre(),
-                    entidad.getTelefono(),entidad.getCuentasPago().stream().map(cp -> new CuentaPagoDTO(cp.getNombre(),cp.getSaldo())).toList());
+                    entidad.getTelefono(),entidad.getActivo(),entidad.getCuentasPago().stream().map(cp -> new CuentaPagoDTO(cp.getNombre(),cp.getSaldo())).toList());
         }
         else {
-            return new UsuarioDTO("error", "grave", "que problema");
+            return new UsuarioDTO("error", "grave", "que problema", false);
         }
     }
 
