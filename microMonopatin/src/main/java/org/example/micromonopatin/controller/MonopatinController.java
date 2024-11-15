@@ -144,6 +144,43 @@ public class MonopatinController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+
+
+    @PatchMapping("/{idMonopatin}/comenzar-viaje")
+    public ResponseEntity<Void> comenzarViaje(@PathVariable String idMonopatin) {
+        try {
+            monopatinServicio.comenzarViaje(idMonopatin);
+            return ResponseEntity.noContent().build(); // Responde con 204 No Content
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build(); // Responde con 400 Bad Request
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build(); // Responde con 500 Internal Server Error
+        }
+    }
+
+    @PatchMapping("/{idMonopatin}/finalizar-viaje")
+    public ResponseEntity<Void> finalizarViaje(
+            @PathVariable String idMonopatin,
+            @RequestParam String idParadaDestino,
+            @RequestParam int kmRecorridos,
+            @RequestParam int tiempoPausa,
+            @RequestParam int tiempoUso) {
+        try {
+            // Llamar al servicio con los parámetros
+            monopatinServicio.finalizarViaje(
+                    idMonopatin,
+                    idParadaDestino,
+                    kmRecorridos,
+                    tiempoPausa,
+                    tiempoUso
+            );
+            return ResponseEntity.noContent().build(); // 204 No Content
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null); // 400 Bad Request
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null); // 500 Internal Server Error
+        }
+    }
 }
 
 

@@ -201,9 +201,24 @@ public class MonopatinServicio {
 
     public void comenzarViaje (String idMonopatin) {
         Monopatin monopatin = monopatinRepository.findById(idMonopatin).orElse(null);
-        if (monopatin != null) {
+        if ((monopatin != null)&&(monopatin.getEstado().equals("disponible"))) {
             monopatin.setEstado("en uso");
             monopatin.setIdParada(null);
+            monopatinRepository.save(monopatin);
+        }
+    }
+
+    public void finalizarViaje (String idMonopatin, String idParadaDestino, int kmRecorridos, int tiempoPausa, int tiempoUso) {
+        Monopatin monopatin = monopatinRepository.findById(idMonopatin).orElse(null);
+        Parada parada = paradaRepository.findById(idParadaDestino).orElse(null);
+        if ((monopatin != null) && (parada !=null)) {
+            monopatin.setEstado("disponible");
+            monopatin.setIdParada(idParadaDestino);
+            monopatin.setKmsRecorridos(monopatin.getKmsRecorridos()+kmRecorridos);
+            monopatin.setTiempoEnPausa(monopatin.getTiempoDeUso()+tiempoPausa);
+            monopatin.setTiempoDeUso(monopatin.getTiempoDeUso()+tiempoUso);
+            monopatin.setLatitud(parada.getLatitud());
+            monopatin.setLongitud(parada.getLongitud());
             monopatinRepository.save(monopatin);
         }
     }

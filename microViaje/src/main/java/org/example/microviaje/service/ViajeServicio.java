@@ -30,6 +30,8 @@ public class ViajeServicio {
     public ViajeDTO save(RequestViajeDTO request){
         Viaje viaje = new Viaje(request);
         var result = viajeRepository.save(viaje);
+        //metodo iniciar viaje de monopatin (recibe viaje.get(idMonopatin)
+        //tener en cuenta que idMonopatin es de tipo String
         return new ViajeDTO(result.getFechaViaje(), result.getTiempoPausa(),result.getTiempoViaje(),
                 result.getKmRecorridos(), result.getMontoTotal());
     }
