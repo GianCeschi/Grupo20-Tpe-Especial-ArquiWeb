@@ -6,6 +6,7 @@ import org.example.microviaje.dto.RequestViajeDTO;
 import org.example.microviaje.dto.ViajeDTO;
 import org.example.microviaje.entity.Viaje;
 import org.example.microviaje.feignClient.MonopatinFeignClient;
+import org.example.microviaje.repository.TarifaRepository;
 import org.example.microviaje.repository.ViajeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,11 +21,15 @@ import java.util.stream.Collectors;
 
 @Service("ViajeServicio")
 public class ViajeServicio {
+    private final int PAUSA_MAXIMA = 15;
     @Autowired
     private ViajeRepository viajeRepository;
 
     @Autowired
     private MonopatinFeignClient monopatinFeignClient;
+
+    @Autowired
+    private TarifaRepository tarifaRepository;
 
     public ViajeServicio(ViajeRepository viajeRepository) {
         this.viajeRepository = viajeRepository;
@@ -43,7 +48,24 @@ public class ViajeServicio {
         Viaje viaje = new Viaje(request);
         viaje.setIdViaje(id);
         try{
+            double tarifa;
+            // verifico el tiempo de pausa y decido qué tarifa implementar
+            if (viaje.getTiempoPausa() > PAUSA_MAXIMA) {
+                // busco en respository tarifa el valor de la tarifa alta mas actual
+                tarifa = tarifaRepository.findValorTarifaAltaActual(LocalDate.now())
+                        .orElseThrow(() -> new Exception("No se encontró una tarifa alta válida"));
+            } else {
+                // busco en respository tarifa el valor de la tarifa baja mas actual
+                tarifa = tarifaRepository.findValorTarifaBajaActual(LocalDate.now())
+                        .orElseThrow(() -> new Exception("No se encontró una tarifa baja válida"));
+            }
+            // multiplico los km recorridos en el viaje por la tarifa correspondiente
+            double montoTotal = viaje.getKmRecorridos() * tarifa;
+            // seteo el valor del viaje
+            viaje.setMontoTotal(montoTotal);
+            // actualizo el viaje una vez finalizado con todos los datos
             var resultado = viajeRepository.save(viaje);
+            // obtengo los datos necesarios para actualizar el monopatin medianta la comunicacion FeignClient
             monopatinFeignClient.finalizarViaje(resultado.getIdMonopatin(),resultado.getParadaDestino(),
                     resultado.getKmRecorridos(),resultado.getTiempoPausa(),resultado.getTiempoViaje());
 
