@@ -6,6 +6,7 @@ import org.example.microviaje.dto.RequestViajeDTO;
 import org.example.microviaje.dto.ViajeDTO;
 import org.example.microviaje.entity.Viaje;
 import org.example.microviaje.feignClient.MonopatinFeignClient;
+import org.example.microviaje.feignClient.UsuarioFeignClient;
 import org.example.microviaje.repository.TarifaRepository;
 import org.example.microviaje.repository.ViajeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,9 @@ public class ViajeServicio {
 
     @Autowired
     private MonopatinFeignClient monopatinFeignClient;
+
+    @Autowired
+    UsuarioFeignClient usuarioFeignClient;
 
     @Autowired
     private TarifaRepository tarifaRepository;
@@ -68,6 +72,8 @@ public class ViajeServicio {
             // obtengo los datos necesarios para actualizar el monopatin medianta la comunicacion FeignClient
             monopatinFeignClient.finalizarViaje(resultado.getIdMonopatin(),resultado.getParadaDestino(),
                     resultado.getKmRecorridos(),resultado.getTiempoPausa(),resultado.getTiempoViaje());
+            //Indicamos a usuario monto a descontar a la cuentaPago.
+            usuarioFeignClient.pagarViaje(resultado.getIdCuentaPago(),resultado.getMontoTotal());
 
             return new ViajeDTO(resultado.getFechaViaje(),resultado.getTiempoPausa(),resultado.getTiempoViaje(),
                     resultado.getKmRecorridos(),resultado.getMontoTotal(),resultado.getParadaDestino());

@@ -48,4 +48,9 @@ public class CuentaPagoController {
         var resultado =  cuentaPagoService.update(id,request);
         return ResponseEntity.ok().body(resultado);
     }
+
+    @PutMapping("/cuentapagos/pagarViaje/{id}")
+    public void pagarViaje(@PathVariable Long id,@RequestParam Double montoPagar) {
+        cuentaPagoService.pagarViaje(id, montoPagar);
+    }
 }

@@ -106,4 +106,13 @@ public class CuentaPagoServicio {
         }
 
     }
+    //Descuenta monto del saldo, habilitamos que quede saldo negativo
+
+    public void pagarViaje(Long id, Double montoPagar){
+        Optional<CuentaPago>  optCuentaPago = cuentaPagoRepository.findById(id);
+        if(optCuentaPago.isPresent()){
+            CuentaPago cuentaPago = optCuentaPago.get();
+            cuentaPago.setSaldo(cuentaPago.getSaldo() - montoPagar);
+        }
+    }
 }
