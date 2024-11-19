@@ -12,13 +12,14 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
+
 public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final AuthorityRepository authorityRepository;
 
+    @Transactional
     public long saveUser( UserDTO request ) {
         final var user = new User( request.getUsername() );
         user.setPassword( passwordEncoder.encode( request.getPassword() ) );

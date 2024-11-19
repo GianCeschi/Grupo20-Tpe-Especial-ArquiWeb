@@ -33,6 +33,7 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
+    @Bean
     public SecurityFilterChain filterChain(final HttpSecurity http) throws Exception {
         http
             .csrf(AbstractHttpConfigurer::disable);
@@ -42,10 +43,10 @@ public class SecurityConfig {
             .securityMatcher("/api/**")
             .authorizeHttpRequests(authz -> authz
                     .requestMatchers(HttpMethod.POST, "/api/authenticate").permitAll()
-                    .requestMatchers(HttpMethod.POST, "/api/usuarios").permitAll()
+                    .requestMatchers(HttpMethod.POST, "/api/users").permitAll()
                     .requestMatchers( HttpMethod.POST,"/api/carreras").hasAuthority( AuthorityConstant._ADMIN )//el orden va de más específica a menos específica
-                    .requestMatchers( "/api/carreras/**").hasAuthority( AuthorityConstant._ALUMNO ) // ésta es menos específica que la de arriba
-                    .requestMatchers("/api/estudiantes/**").hasAuthority( AuthorityConstant._ALUMNO )
+                    .requestMatchers( "/api/carreras/**").hasAuthority( AuthorityConstant._ADMIN ) // ésta es menos específica que la de arriba
+                    .requestMatchers("/api/estudiantes/**").hasAuthority( AuthorityConstant._ADMIN )
                     .requestMatchers( "/api/inscripciones/**").hasAuthority( AuthorityConstant._ADMIN )
                     .anyRequest().authenticated()
             )
