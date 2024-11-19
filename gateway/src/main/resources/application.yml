@@ -7,7 +7,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3309/auth?createDatabaseIfNotExist=true
     username: root
-    jpa:
+  jpa:
       hibernate:
         ddl-auto: update
       show-sql: true
