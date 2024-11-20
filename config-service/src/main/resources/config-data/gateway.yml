@@ -27,6 +27,23 @@ spring:
             uri: lb://microViaje
             predicates:
               - Path=/api/viajes/**
+  config:
+    import: optional:configserver:http://localhost:8081
+
+springdoc:
+  api-docs:
+    enabled: true
+    groups:
+      enabled: true
+  swagger-ui:
+    urls:
+      - name: Monopatines
+        url: /api/monopatines/v3/api-docs
+      - name: Usuarios
+        url: /api/usuarios/v3/api-docs
+      - name: Viajes
+        url: /api/viajes/v3/api-docs
+
 logging:
   level:
     org.springframework.cloud.gateway: DEBUG
