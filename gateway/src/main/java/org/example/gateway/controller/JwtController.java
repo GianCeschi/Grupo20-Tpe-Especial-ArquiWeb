@@ -1,6 +1,8 @@
 package org.example.gateway.controller;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.gateway.security.jwt.JwtFilter;
@@ -26,6 +28,17 @@ public class JwtController {
     private final TokenProvider tokenProvider;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
 
+    @Operation(
+            summary = "Autenticar un User",
+            description = "Este endpoint permite autenticar un User existente, obteniendo un token para poder acceder a funcionalidades segurizadas en la aplicación, de acuerdo a su rol (o sus roles).",
+            operationId = "authenticateUser",
+            tags = {"User", "Auth"},
+            responses = {
+                    @ApiResponse(responseCode = "201", description = "Usuario creado con éxito"),
+                    @ApiResponse(responseCode = "400", description = "Solicitud incorrecta")
+            },
+            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Datos del usuario a crear", required = true)
+    )
     @PostMapping()
     public ResponseEntity<JWTToken> authorize(@Valid @RequestBody LoginDTO request ) {
 

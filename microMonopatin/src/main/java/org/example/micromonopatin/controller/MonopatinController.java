@@ -1,12 +1,15 @@
 package org.example.micromonopatin.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import org.example.micromonopatin.DTO.MonopatinDTO;
-import org.example.micromonopatin.entity.Monopatin;
 import org.example.micromonopatin.service.MonopatinServicio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 
 import java.util.List;
 import java.util.Map;
@@ -26,7 +29,17 @@ public class MonopatinController {
 
     //        ******************* METODOS  PARA ABM DE MONOPATINES *******************
 
-
+    @Operation(
+            summary = "<Descripción corta>",
+            description = "<Descripción mas detallada>",
+            operationId = "<nombre unico en toda la app>",
+            tags = {"Monopatin", "Crear"},
+            responses = {
+                    @ApiResponse(responseCode = "201", description = "Monopatín creado con éxito"),
+                    @ApiResponse(responseCode = "400", description = "Solicitud incorrecta")
+            },
+            requestBody = @RequestBody(description = "Datos del monopatin a crear", required = true)
+    )
     @PostMapping("")
     public MonopatinDTO createMonopatin(@RequestBody MonopatinDTO monopatinDTO) {
         return monopatinServicio.saveMonopatin(monopatinDTO);
