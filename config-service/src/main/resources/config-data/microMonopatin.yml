@@ -12,6 +12,13 @@ spring:
       #password: password
       #authentication-database: admin
       uri: mongodb://root:password@localhost:27017/monopatin-db?authSource=admin
+
+springdoc:
+  api-docs:
+    enabled: true
+    groups:
+      enabled: true
+
 eureka:
   client:
     fetch-registry: true

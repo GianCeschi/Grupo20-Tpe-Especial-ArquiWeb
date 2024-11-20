@@ -38,11 +38,11 @@ springdoc:
   swagger-ui:
     urls:
       - name: Monopatines
-        url: /api/monopatines/v3/api-docs
+        url: microMonopatin/v3/api-docs
       - name: Usuarios
-        url: /api/usuarios/v3/api-docs
+        url: microUsuarios/v3/api-docs
       - name: Viajes
-        url: /api/viajes/v3/api-docs
+        url: microViajes/v3/api-docs
 
 logging:
   level:
