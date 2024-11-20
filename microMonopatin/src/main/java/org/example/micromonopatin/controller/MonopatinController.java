@@ -2,7 +2,6 @@ package org.example.micromonopatin.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import org.example.micromonopatin.DTO.MonopatinDTO;
 import org.example.micromonopatin.service.MonopatinServicio;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,22 +29,30 @@ public class MonopatinController {
     //        ******************* METODOS  PARA ABM DE MONOPATINES *******************
 
     @Operation(
-            summary = "<Descripción corta>",
-            description = "<Descripción mas detallada>",
-            operationId = "<nombre unico en toda la app>",
+            summary = "Dar de alta un monopatin",
+            description = "Un usuario autenticado con rol ADMIN, puede dar de alta un monopatin en la aplicacion.",
+            operationId = "createMonopatin",
             tags = {"Monopatin", "Crear"},
             responses = {
                     @ApiResponse(responseCode = "201", description = "Monopatín creado con éxito"),
                     @ApiResponse(responseCode = "400", description = "Solicitud incorrecta")
-            },
-            requestBody = @RequestBody(description = "Datos del monopatin a crear", required = true)
+            }
     )
     @PostMapping("")
     public MonopatinDTO createMonopatin(@RequestBody MonopatinDTO monopatinDTO) {
         return monopatinServicio.saveMonopatin(monopatinDTO);
     }
 
-
+    @Operation(
+            summary = "Eliminar un monopatin",
+            description = "Un usuario autenticado con rol ADMIN, puede eliminar un monopatin de la aplicacion indicando el idMonopatin.",
+            operationId = "deleteMonopatin",
+            tags = {"Monopatin", "Eliminar"},
+            responses = {
+                    @ApiResponse(responseCode = "204", description = "Monopatín eliminado con éxito"),
+                    @ApiResponse(responseCode = "400", description = "Solicitud incorrecta")
+            }
+    )
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteMonopatin(@PathVariable String id) {
         if (monopatinServicio.getMonopatinById(id).isPresent()) {
@@ -58,12 +65,31 @@ public class MonopatinController {
 
     //        ******************* METODOS  PARA RECUPERAR MONOPATINES *******************
 
-
+    @Operation(
+            summary = "Obtener listado de monopatines.",
+            description = "Un usuario autenticado con rol ADMIN, puede obtener un listado de todos los monopatines de la aplicacion.",
+            operationId = "getAllMonopatin",
+            tags = {"Monopatin", "Reporte"},
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Solicitud exitosa"),
+                    @ApiResponse(responseCode = "400", description = "Solicitud incorrecta")
+            }
+    )
     @GetMapping("")
     public List<MonopatinDTO> getAllMonopatines() {
         return monopatinServicio.getAllMonopatines();
     }
 
+    @Operation(
+            summary = "Obtener detalle de un monopatin.",
+            description = "Un usuario autenticado con rol ADMIN, puede obtener la información detallada de un monopatin de la aplicacion.",
+            operationId = "getOneMonopatin",
+            tags = {"Monopatin", "Reporte"},
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Solicitud exitosa"),
+                    @ApiResponse(responseCode = "400", description = "Solicitud incorrecta")
+            }
+    )
     @GetMapping("/{id}")
     public ResponseEntity<MonopatinDTO> getMonopatinById(@PathVariable String id) {
         return monopatinServicio.getMonopatinById(id)
@@ -74,6 +100,16 @@ public class MonopatinController {
 
 
     //        ******************* METODO PARA ASIGNARLE UNA PARADA A UN MONOPATIN *******************
+    @Operation(
+            summary = "Asignar parada a un monopatin.",
+            description = "Un usuario autenticado con rol ADMIN, puede asignar una parada específica a un monopatin. Es decir, ubica el monopatín en la parada de referencia.",
+            operationId = "ubicarMonopatinEnParada",
+            tags = {"Monopatin", "Parada"},
+            responses = {
+                    @ApiResponse(responseCode = "201", description = "Monopatín creado con éxito"),
+                    @ApiResponse(responseCode = "400", description = "Solicitud incorrecta")
+            }
+    )
     @PutMapping("/{idMonopatin}/asignarParada/{idParada}")
     public ResponseEntity<Void> asignarParada(@PathVariable String idMonopatin, @PathVariable String idParada) {
         try {
@@ -85,7 +121,16 @@ public class MonopatinController {
     }
 
     //        ******************* METODOS  PARA MANTENIMIENTO DE MONOPATINES *******************
-
+    @Operation(
+            summary = "Registrar mantenimiento",
+            description = "Un usuario autenticado con rol MANTENIMIENTO, puede registrar que un monopatin ingresa en mantenimiento.",
+            operationId = "registrarMantenimientoMonopatin",
+            tags = {"Monopatin", "Mantenimiento"},
+            responses = {
+                    @ApiResponse(responseCode = "201", description = "Monopatín creado con éxito"),
+                    @ApiResponse(responseCode = "400", description = "Solicitud incorrecta")
+            }
+    )
     @PutMapping("/mantenimiento/{idMonopatin}/registrarMantenimiento")
     public ResponseEntity<Void> registrarMantenimiento(@PathVariable String idMonopatin) {
         try {
@@ -95,6 +140,17 @@ public class MonopatinController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+
+    @Operation(
+            summary = "Obtener listado de monopatines.",
+            description = "Un usuario autenticado con rol ADMIN, puede obtener un listado de todos los monopatines de la aplicacion.",
+            operationId = "getAllMonopatin",
+            tags = {"Monopatin", "Reporte"},
+            responses = {
+                    @ApiResponse(responseCode = "201", description = "Monopatín creado con éxito"),
+                    @ApiResponse(responseCode = "400", description = "Solicitud incorrecta")
+            }
+    )
     @PutMapping("/mantenimiento/{idMonopatin}/finalizarMantenimiento")
     public ResponseEntity<Void> finalizarMantenimiento(@PathVariable String idMonopatin) {
         try {
@@ -106,7 +162,16 @@ public class MonopatinController {
     }
 
     //        ******************* METODOS  PARA REPORTES SOLICITADOS *******************
-
+    @Operation(
+            summary = "Obtener reporte de monopatines según su estado.",
+            description = "Un usuario autenticado con rol MANTENIMIENTO, puede obtener unreporte que indique  la cantidad de monopatines operativos y en mantenimiento.",
+            operationId = "getConteoPorEstado",
+            tags = {"Monopatin", "Reporte"},
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Monopatín creado con éxito"),
+                    @ApiResponse(responseCode = "400", description = "Solicitud incorrecta")
+            }
+    )
     @GetMapping("/mantenimiento/conteoPorEstado")
     public Map<String, Long> obtenerConteoPorEstado() {
         return monopatinServicio.obtenerConteoPorEstado();

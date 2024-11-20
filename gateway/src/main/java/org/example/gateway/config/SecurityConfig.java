@@ -51,7 +51,7 @@ public class SecurityConfig {
                     .requestMatchers(HttpMethod.PATCH, "/api/monopatines").hasAuthority(AuthorityConstant._USUARIO)
                     .requestMatchers(HttpMethod.GET, "/api/monopatines/cercanos").hasAuthority(AuthorityConstant._USUARIO)
                     .requestMatchers("/api/monopatines/**").hasAuthority( AuthorityConstant._ADMIN )
-                    .requestMatchers( HttpMethod.POST,"/api/usuarios").permitAll()//el orden va de más específica a menos específica
+                    .requestMatchers( HttpMethod.POST,"/api/usuarios").hasAuthority(AuthorityConstant._USUARIO)//el orden va de más específica a menos específica
                     .requestMatchers( HttpMethod.GET,"/api/usuarios/cuentapagos").hasAuthority( AuthorityConstant._ADMIN ) //el orden va de más específica a menos específica
                     .requestMatchers( "/api/usuarios/cuentapagos/**").hasAuthority( AuthorityConstant._USUARIO ) //el orden va de más específica a menos específica
                     .requestMatchers( HttpMethod.GET,"/api/usuarios/**").hasAuthority( AuthorityConstant._ADMIN ) //el orden va de más específica a menos específica
