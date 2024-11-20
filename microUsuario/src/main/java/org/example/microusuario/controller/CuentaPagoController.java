@@ -27,7 +27,7 @@ public class CuentaPagoController {
             summary = "Obtener cuentaPagos",
             description = "Este endpoint permite obtener cuentaPagos",
             operationId = "getCuentaPagos",
-            tags = {"Cuentapago", "ObtenerTodas"},
+            tags = {"Cuentapago", "ObtenerCP"},
             responses = {
                     @ApiResponse(responseCode = "200", description = "Cuentapago encontrada"),
                     @ApiResponse(responseCode = "404", description = "Cuentapago no encontrada")
@@ -107,7 +107,7 @@ public class CuentaPagoController {
             summary = "Actualizar una cuentapago segun monto",
             description = "Este endpoint actualiza los datos de una cuentapago existente especificando su ID.Descuenta monto del saldo y se habilito que quede saldo negativo",
             operationId = "updateSaldoCuentapago",
-            tags = {"Cuentapago", "ActualizarSaldoCP"},
+            tags = {"Cuentapago", "ActualizarCP"},
             responses = {
                     @ApiResponse(responseCode = "200", description = "Cuentapago actualizada con éxito"),
                     @ApiResponse(responseCode = "400", description = "Solicitud incorrecta"),

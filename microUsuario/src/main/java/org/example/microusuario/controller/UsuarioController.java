@@ -78,7 +78,7 @@ public class UsuarioController {
             summary = "Obtener usuarios",
             description = "Este endpoint permite obtener usuarios",
             operationId = "getUsuarios",
-            tags = {"Usuario", "ObtenerTodos"},
+            tags = {"Usuario", "Obtener"},
             responses = {
                     @ApiResponse(responseCode = "200", description = "Usuario encontrado"),
                     @ApiResponse(responseCode = "404", description = "Usuario no encontrado")
@@ -109,7 +109,7 @@ public class UsuarioController {
             summary = "Cambiar estado de un usuario",
             description = "Este endpoint permite cambiar el estado de un usuario existente especificando su ID. Cambia entre activo e inactivo.",
             operationId = "patchUsuario",
-            tags = {"Usuario", "Patch"},
+            tags = {"Usuario", "Actualizar"},
             responses = {
                     @ApiResponse(responseCode = "200", description = "Usuario actualizado"),
                     @ApiResponse(responseCode = "404", description = "Usuario no encontrado")
