@@ -44,9 +44,7 @@ public class SecurityConfig {
             .authorizeHttpRequests(authz -> authz
                     .requestMatchers(HttpMethod.POST, "/api/authenticate").permitAll()
                     .requestMatchers(HttpMethod.POST, "/api/users").permitAll()
-                    .requestMatchers(HttpMethod.GET, "/api/monopatines/v3/**").permitAll()
-                    .requestMatchers(HttpMethod.GET, "/api/viajes/v3/**").permitAll()
-                    .requestMatchers(HttpMethod.GET, "/api/usuarios/v3/**").permitAll()
+                    .requestMatchers("/api/**/swagger-ui/**", "/api/**/v3/api-docs/**").permitAll()
                     .requestMatchers("/api/monopatines/mantenimiento/**").hasAuthority(AuthorityConstant._MANTENIMIENTO)
                     .requestMatchers(HttpMethod.PATCH, "/api/monopatines").hasAuthority(AuthorityConstant._USUARIO)
                     .requestMatchers(HttpMethod.GET, "/api/monopatines/cercanos").hasAuthority(AuthorityConstant._USUARIO)

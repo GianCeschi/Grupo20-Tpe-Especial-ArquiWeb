@@ -35,14 +35,6 @@ springdoc:
     enabled: true
     groups:
       enabled: true
-  swagger-ui:
-    urls:
-      - name: Monopatines
-        url: microMonopatin/v3/api-docs
-      - name: Usuarios
-        url: microUsuarios/v3/api-docs
-      - name: Viajes
-        url: microViajes/v3/api-docs
 
 logging:
   level:
