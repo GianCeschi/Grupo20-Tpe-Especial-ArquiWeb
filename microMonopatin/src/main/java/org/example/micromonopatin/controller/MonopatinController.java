@@ -106,7 +106,7 @@ public class MonopatinController {
             operationId = "ubicarMonopatinEnParada",
             tags = {"Monopatin", "Parada"},
             responses = {
-                    @ApiResponse(responseCode = "201", description = "Monopatín creado con éxito"),
+                    @ApiResponse(responseCode = "201", description = "Solicitud exitosa"),
                     @ApiResponse(responseCode = "400", description = "Solicitud incorrecta")
             }
     )
@@ -127,7 +127,7 @@ public class MonopatinController {
             operationId = "registrarMantenimientoMonopatin",
             tags = {"Monopatin", "Mantenimiento"},
             responses = {
-                    @ApiResponse(responseCode = "201", description = "Monopatín creado con éxito"),
+                    @ApiResponse(responseCode = "201", description = "Solicitud exitosa"),
                     @ApiResponse(responseCode = "400", description = "Solicitud incorrecta")
             }
     )
@@ -147,7 +147,7 @@ public class MonopatinController {
             operationId = "getAllMonopatin",
             tags = {"Monopatin", "Reporte"},
             responses = {
-                    @ApiResponse(responseCode = "201", description = "Monopatín creado con éxito"),
+                    @ApiResponse(responseCode = "201", description = "Solicitud exitosa"),
                     @ApiResponse(responseCode = "400", description = "Solicitud incorrecta")
             }
     )
@@ -168,7 +168,7 @@ public class MonopatinController {
             operationId = "getConteoPorEstado",
             tags = {"Monopatin", "Reporte"},
             responses = {
-                    @ApiResponse(responseCode = "200", description = "Monopatín creado con éxito"),
+                    @ApiResponse(responseCode = "200", description = "Solicitud exitosa"),
                     @ApiResponse(responseCode = "400", description = "Solicitud incorrecta")
             }
     )
@@ -177,6 +177,16 @@ public class MonopatinController {
         return monopatinServicio.obtenerConteoPorEstado();
     }
 
+    @Operation(
+            summary = "Obtener reporte de monopatines por kilómetros.",
+            description = "Un usuario autenticado con rol MANTENIMIENTO, puede obtener unreporte de monopatines, ordenado por la cantidad de kms recorridos.",
+            operationId = "getReportePorKms",
+            tags = {"Monopatin", "Reporte"},
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Solicitud exitosa"),
+                    @ApiResponse(responseCode = "500", description = "Internal Server Error")
+            }
+    )
     @GetMapping("/reportePorKilometros")
     public ResponseEntity<List<MonopatinDTO>> reportePorKilometros() {
         try {
@@ -187,6 +197,16 @@ public class MonopatinController {
         }
     }
 
+    @Operation(
+            summary = "Obtener reporte de monopatines por tiempo.",
+            description = "Un usuario autenticado con rol MANTENIMIENTO, puede obtener unreporte de monopatines, ordenado por su tiempo de uso, pudiendo o no, contemplar el tiempo en pausa de cada monopatín.",
+            operationId = "getReportePorTiempo",
+            tags = {"Monopatin", "Reporte"},
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Solicitud exitosa"),
+                    @ApiResponse(responseCode = "500", description = "Internal Server Error")
+            }
+    )
     @GetMapping("/mantenimiento/reportePorTiempo")
     public ResponseEntity<List<MonopatinDTO>> reportePorTiempo(@RequestParam boolean considerarTiempoEnPausa) {
         try {
@@ -196,6 +216,17 @@ public class MonopatinController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+
+    @Operation(
+            summary = "Obtener reporte de monopatines cercanos.",
+            description = "Un usuario autenticado con rol USUARIO, puede obtener unreporte de los monopatines mas cercanos a su ubicación.",
+            operationId = "getMonopatinesCercanos",
+            tags = {"Monopatin", "Reporte"},
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Solicitud exitosa"),
+                    @ApiResponse(responseCode = "500", description = "Internal Server Error")
+            }
+    )
     // Endpoint para obtener los monopatines cercanos
     @GetMapping("/cercanos")
     public ResponseEntity<List<MonopatinDTO>> obtenerMonopatinesCercanos(
@@ -212,6 +243,16 @@ public class MonopatinController {
         }
     }
 
+    @Operation(
+            summary = "Obtener otro reporte de monopatines por kilómetros.",
+            description = "Un usuario autenticado con rol MANTENIMIENTO, puede obtener unreporte de monopatines, ordenado por la cantidad de kms recorridos.",
+            operationId = "getOtroReportePorKms",
+            tags = {"Monopatin", "Reporte"},
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Solicitud exitosa"),
+                    @ApiResponse(responseCode = "500", description = "Internal Server Error")
+            }
+    )
     @GetMapping("/mantenimiento/reporteKilometros")
     public ResponseEntity<List<MonopatinDTO>> generarReportePorKilometros(@RequestParam boolean incluirTiempoDePausa) {
         try {
@@ -223,7 +264,17 @@ public class MonopatinController {
         }
     }
 
-
+    @Operation(
+            summary = "Utilizar un monopatin.",
+            description = "Un usuario autenticado con rol USUARIO, puede utilizar un monopatin, dando inicio al viaje.",
+            operationId = "iniciarViajeMonopatin",
+            tags = {"Monopatin", "Viaje"},
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Solicitud exitosa"),
+                    @ApiResponse(responseCode = "400", description = "Bad Request"),
+                    @ApiResponse(responseCode = "500", description = "Internal Server Error")
+            }
+    )
     @PatchMapping("/{idMonopatin}/comenzar-viaje")
     public ResponseEntity<Void> comenzarViaje(@PathVariable String idMonopatin) {
         try {
@@ -235,7 +286,17 @@ public class MonopatinController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build(); // Responde con 500 Internal Server Error
         }
     }
-
+    @Operation(
+            summary = "Liberar un monopatin.",
+            description = "Un usuario autenticado con rol USUARIO, puede liberar un monopatin que tiene en uso, dando fin al viaje.",
+            operationId = "finalizarViajeMonopatin",
+            tags = {"Monopatin", "Viaje"},
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Solicitud exitosa"),
+                    @ApiResponse(responseCode = "400", description = "Bad Request"),
+                    @ApiResponse(responseCode = "500", description = "Internal Server Error")
+            }
+    )
     @PatchMapping("/{idMonopatin}/finalizar-viaje")
     public ResponseEntity<Void> finalizarViaje(
             @PathVariable String idMonopatin,
