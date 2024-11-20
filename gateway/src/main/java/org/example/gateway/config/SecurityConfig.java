@@ -44,7 +44,7 @@ public class SecurityConfig {
             .authorizeHttpRequests(authz -> authz
                     .requestMatchers(HttpMethod.POST, "/api/authenticate").permitAll()
                     .requestMatchers(HttpMethod.POST, "/api/users").permitAll()
-                    .requestMatchers("/api/monopatines/mantenimiento").hasAuthority(AuthorityConstant._MANTENIMIENTO)
+                    .requestMatchers("/api/monopatines/mantenimiento/**").hasAuthority(AuthorityConstant._MANTENIMIENTO)
                     .requestMatchers(HttpMethod.PATCH, "/api/monopatines").hasAuthority(AuthorityConstant._USUARIO)
                     .requestMatchers(HttpMethod.GET, "/api/monopatines/cercanos").hasAuthority(AuthorityConstant._USUARIO)
                     .requestMatchers("/api/monopatines/**").hasAuthority( AuthorityConstant._ADMIN )
