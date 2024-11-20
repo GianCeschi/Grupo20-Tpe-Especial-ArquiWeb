@@ -44,10 +44,17 @@ public class SecurityConfig {
             .authorizeHttpRequests(authz -> authz
                     .requestMatchers(HttpMethod.POST, "/api/authenticate").permitAll()
                     .requestMatchers(HttpMethod.POST, "/api/users").permitAll()
-                    .requestMatchers( HttpMethod.POST,"/api/carreras").hasAuthority( AuthorityConstant._ADMIN )//el orden va de más específica a menos específica
-                    .requestMatchers( "/api/carreras/**").hasAuthority( AuthorityConstant._ADMIN ) // ésta es menos específica que la de arriba
-                    .requestMatchers("/api/estudiantes/**").hasAuthority( AuthorityConstant._ADMIN )
-                    .requestMatchers( "/api/inscripciones/**").hasAuthority( AuthorityConstant._ADMIN )
+                    .requestMatchers("/api/monopatines/mantenimiento").hasAuthority(AuthorityConstant._MANTENIMIENTO)
+                    .requestMatchers(HttpMethod.PATCH, "/api/monopatines").hasAuthority(AuthorityConstant._USUARIO)
+                    .requestMatchers(HttpMethod.GET, "/api/monopatines/cercanos").hasAuthority(AuthorityConstant._USUARIO)
+                    .requestMatchers("/api/monopatines/**").hasAuthority( AuthorityConstant._ADMIN )
+                    .requestMatchers( HttpMethod.POST,"/api/usuarios").permitAll()//el orden va de más específica a menos específica
+                    .requestMatchers( HttpMethod.GET,"/api/usuarios/cuentapagos").hasAuthority( AuthorityConstant._ADMIN ) //el orden va de más específica a menos específica
+                    .requestMatchers( "/api/usuarios/cuentapagos/**").hasAuthority( AuthorityConstant._USUARIO ) //el orden va de más específica a menos específica
+                    .requestMatchers( HttpMethod.GET,"/api/usuarios/**").hasAuthority( AuthorityConstant._ADMIN ) //el orden va de más específica a menos específica
+                    .requestMatchers(HttpMethod.POST, "/api/viajes").hasAuthority( AuthorityConstant._USUARIO )
+                    .requestMatchers(HttpMethod.PATCH, "/api/viajes/**").hasAuthority( AuthorityConstant._USUARIO)
+                    .requestMatchers("/api/viajes/**").hasAuthority( AuthorityConstant._ADMIN )
                     .anyRequest().authenticated()
             )
             .httpBasic(Customizer.withDefaults())

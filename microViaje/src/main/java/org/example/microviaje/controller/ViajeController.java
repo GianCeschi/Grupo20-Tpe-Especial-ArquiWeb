@@ -26,7 +26,7 @@ public class ViajeController {
         return ResponseEntity.ok().body(result);
     }
 
-    @PutMapping("/{id}")
+    @PatchMapping("/{id}")
     public ResponseEntity<ViajeDTO> update(@PathVariable Long id, @RequestBody RequestViajeDTO nuevoViaje) throws Exception {
         var resultado = viajeServicio.update(id, nuevoViaje);
         return ResponseEntity.ok().body(resultado);

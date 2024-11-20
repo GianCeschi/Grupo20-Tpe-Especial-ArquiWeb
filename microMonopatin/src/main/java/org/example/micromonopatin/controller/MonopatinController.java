@@ -73,7 +73,7 @@ public class MonopatinController {
 
     //        ******************* METODOS  PARA MANTENIMIENTO DE MONOPATINES *******************
 
-    @PutMapping("/{idMonopatin}/registrarMantenimiento")
+    @PutMapping("/mantenimiento/{idMonopatin}/registrarMantenimiento")
     public ResponseEntity<Void> registrarMantenimiento(@PathVariable String idMonopatin) {
         try {
             monopatinServicio.registrarMantenimiento(idMonopatin);
@@ -82,7 +82,7 @@ public class MonopatinController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
-    @PutMapping("/{idMonopatin}/finalizarMantenimiento")
+    @PutMapping("/mantenimiento/{idMonopatin}/finalizarMantenimiento")
     public ResponseEntity<Void> finalizarMantenimiento(@PathVariable String idMonopatin) {
         try {
             monopatinServicio.finalizarMantenimiento(idMonopatin);
@@ -94,7 +94,7 @@ public class MonopatinController {
 
     //        ******************* METODOS  PARA REPORTES SOLICITADOS *******************
 
-    @GetMapping("/conteoPorEstado")
+    @GetMapping("/mantenimiento/conteoPorEstado")
     public Map<String, Long> obtenerConteoPorEstado() {
         return monopatinServicio.obtenerConteoPorEstado();
     }
@@ -109,7 +109,7 @@ public class MonopatinController {
         }
     }
 
-    @GetMapping("/reportePorTiempo")
+    @GetMapping("/mantenimiento/reportePorTiempo")
     public ResponseEntity<List<MonopatinDTO>> reportePorTiempo(@RequestParam boolean considerarTiempoEnPausa) {
         try {
             List<MonopatinDTO> reporte = monopatinServicio.reportePorTiempo(considerarTiempoEnPausa);
@@ -134,7 +134,7 @@ public class MonopatinController {
         }
     }
 
-    @GetMapping("/reporteKilometros")
+    @GetMapping("/mantenimiento/reporteKilometros")
     public ResponseEntity<List<MonopatinDTO>> generarReportePorKilometros(@RequestParam boolean incluirTiempoDePausa) {
         try {
             // Llamar al servicio para generar el reporte
