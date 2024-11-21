@@ -1,12 +1,16 @@
-#Trabajo Práctico Especial de Arquitecturas Web.
+Trabajo Práctico Especial de Arquitecturas Web.
 
-###Integrantes:
+Integrantes:
 
-*Pablo Andersen.
-*Josefina Belaunzaran.
-*Manuel Cerdeira.
-*Paulo Alvarez.
-*Gianluca Ceschinelli.
+Pablo Andersen.
+
+Josefina Belaunzaran.
+
+Manuel Cerdeira.
+
+Paulo Alvarez.
+
+Gianluca Ceschinelli.
 
 Decidimos realizar 3 microservicios, Usuarios y Viajes ambos con bases de datos MySQL y otro microservicio de monopatines con una base de datos NoSQL Mongo.
 Utilizamos Eureka y Gateway en donde también tenemos una base MySQL en donde manejamos la autenticación y la seguridad de los endpoints mediante JWT.
