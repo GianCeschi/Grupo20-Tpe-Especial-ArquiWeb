@@ -17,6 +17,6 @@ Utilizamos Eureka y Gateway en donde también tenemos una base MySQL en donde ma
 
 Adjuntamos collección de Postman en la raíz del proyecto.
 
-Documentación Swagger: [http://localhost:<puertoMicroservicio\>/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)
+*Documentación Swagger:* [http://localhost:<puertoMicroservicio\>/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)
 
-Nota: puertoMicroservicio hay que reemplazarlo por el puerto dinamico que brinda Eureka.
+*Nota:* puertoMicroservicio hay que reemplazarlo por el puerto dinamico que brinda Eureka.
